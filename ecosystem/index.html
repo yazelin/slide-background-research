@@ -224,7 +224,7 @@
     <tr><td>改稿</td><td>改 HTML 原始碼</td><td>瀏覽器裡點文字就地改、滑桿換版式</td></tr>
     <tr><td>出檔</td><td>16:9 PDF 與 A4 講義</td><td>HTML 離線包、PDF、可編輯 PPTX</td></tr>
     <tr><td>驗收</td><td><code>deck-tools</code> 機器檢查</td><td>明講不做截圖審美精修</td></tr>
-    <tr><td>體積</td><td>1.5 MB</td><td>127 MB（產物只帶其中一支主題 runtime，約 0.7 MB）</td></tr>
+    <tr><td>體積</td><td>1.5 MB</td><td>127 MB（實測匯出成品 8.2 MB：字型 4.6、runtime 1.3、匯出函式庫近 1）</td></tr>
     <tr><td>授權</td><td>MIT</td><td>AGPL-3.0</td></tr>
   </tbody>
 </table>
@@ -242,7 +242,7 @@
 <p><strong>HTML 產物會，PDF 與 PPTX 不會。</strong></p>
 <ul>
   <li><code>src/renderDeck.jsx</code> 第 152 行每次算繪都會產生 <code>assets/imported-theme-runtime.js</code>，<code>scripts/validate-swiss-deck.mjs</code> 第 32 行還會檢查這個檔存在。所以<strong>任何一份 HTML 產物一定帶著它</strong>。</li>
-  <li>它是單主題自包含的 IIFE。<code>dist/theme-runtime/</code> 十二支合計 19 MB，單支介於 0.70 MB 到 0.77 MB 之間，一份 deck 只會帶用到的那一支。</li>
+  <li>它是單主題自包含的 IIFE，大小依主題不同，0.7 MB 到 1.3 MB 都有（<code>dist/theme-runtime/</code> 十二支合計 19 MB）。實際匯出的成品整包 8.2 MB，大宗是 4.6 MB 字型，runtime 佔 1.3 MB。</li>
   <li>PDF 走 Playwright 截圖，PPTX 走 <code>html-deck-to-pptx</code> 管線，兩者都是算繪結果，裡面沒有 JS。</li>
 </ul>
 <p><strong>可以照著做的結論</strong>：拿 dashi 做完，交 PDF 或 PPTX 給對方，不會碰到 AGPL 的散布條款。把匯出的 HTML 離線包放上公開網站或商用，就等於連同它的 runtime 一起散布，條款要自己看一眼（AGPL 的重點在第 13 條：透過網路提供服務也算散布，要提供對應原始碼）。</p>
