@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>開源網頁簡報生態盤點</title>
+<meta name="description" content="2026 年 9 月從 GitHub 撈出來的 36 個網頁簡報 repo，分四類，含授權地雷與怎麼選；以及我們為什麼自製 slide-deck-skill。">
+<style>
+  :root{
+    --ink:#16181d; --ink-soft:#4a5058; --line:#e3e5ea; --bg:#fbfbfc;
+    --accent:#1f5fbf; --card:#fff; --code-bg:#f4f5f8;
+    --warn-bg:#fff8ec; --warn-line:#e8c98a; --key-bg:#eef4ff; --key-line:#bcd2f5;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --ink:#e8eaee; --ink-soft:#a3aab5; --line:#2c3038; --bg:#14161a;
+           --accent:#7fb2ff; --card:#1b1e24; --code-bg:#22262d;
+           --warn-bg:#2a2418; --warn-line:#6b5a33; --key-bg:#1a2436; --key-line:#31456b; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:16px/1.85 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;}
+  .wrap{max-width:860px;margin:0 auto;padding:0 20px 96px}
+  header{padding:60px 0 28px;border-bottom:1px solid var(--line)}
+  h1{font-size:1.95rem;line-height:1.4;margin:0 0 12px;letter-spacing:.01em}
+  .sub{color:var(--ink-soft);margin:0 0 10px}
+  h2{font-size:1.32rem;margin:60px 0 6px;padding-top:8px;letter-spacing:.01em}
+  h2 .num{color:var(--accent);font-variant-numeric:tabular-nums;margin-inline-end:.5em}
+  h3{font-size:1.06rem;margin:34px 0 4px}
+  h4{font-size:.98rem;margin:26px 0 2px}
+  p{margin:14px 0}
+  ul,ol{padding-inline-start:1.4em;margin:14px 0}
+  li{margin:6px 0}
+  a{color:var(--accent)}
+  code{background:var(--code-bg);padding:.12em .38em;border-radius:4px;font-size:.92em}
+  .key{background:var(--key-bg);border:1px solid var(--key-line);border-radius:8px;
+       padding:12px 18px;margin:16px 0 22px;font-size:1.02rem;line-height:1.75}
+  .key b{color:var(--accent);margin-inline-end:.6em}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px 24px;margin:24px 0}
+  .warn{background:var(--warn-bg);border-color:var(--warn-line)}
+  .tablewrap{overflow-x:auto;margin:20px 0;border:1px solid var(--line);border-radius:10px}
+  table{border-collapse:collapse;width:100%;min-width:640px;font-size:.92rem}
+  th,td{text-align:start;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--card);font-weight:600;white-space:nowrap}
+  td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:0}
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 24px;margin:32px 0}
+  .toc ol{margin:6px 0 0;padding-inline-start:1.4em}
+  .toc li{margin:4px 0}
+  footer{margin-top:72px;padding-top:24px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.9rem}
+  .meta{color:var(--ink-soft);font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>開源網頁簡報生態盤點</h1>
+  <p class="sub">2026 年 9 月 1 日從 GitHub 撈出來的清單。星數與最後更新日期都是當天的值。</p>
+  <p><a href="../">回到：簡報背景怎麼做</a></p>
+</header>
+
+<div class="toc">
+  <strong>目錄</strong>
+  <ol>
+    <li><a href="#e1">怎麼撈的</a></li>
+    <li><a href="#e2">甲　AI Agent Skill</a></li>
+    <li><a href="#e3">乙　傳統網頁簡報框架</a></li>
+    <li><a href="#e4">丙　端到端產品</a></li>
+    <li><a href="#e5">丁　底層函式庫</a></li>
+    <li><a href="#e6">選之前先看三件事</a></li>
+    <li><a href="#e7">我們為什麼自製</a></li>
+  </ol>
+</div>
+
+<h2 id="e1"><span class="num">01</span>怎麼撈的</h2>
+<div class="key"><b>一句話</b>十四組關鍵字撈 289 個 repo，人工篩成 36 個，分四類。</div>
+<p>用 GitHub search API 跑十四組關鍵字（中英各半，含「幻灯片」「演示文稿」），去重後 289 個。人工篩掉同名雜訊 —— Steam Deck、Anki 牌組、deck.gl、ViewDeck 這類 —— 再逐一取回精確的星數、授權與最後更新日期。</p>
+<p class="meta">原始資料留在 <code>yaze-journal/projects/slide-background-research/</code>。這 36 個裡面，只有 dashi-ppt-skill 與我們自製的那套真的翻過原始碼，其餘 34 個的描述來自 README 與 GitHub 的中繼資料。</p>
+
+<h2 id="e2"><span class="num">02</span>甲　AI Agent Skill</h2>
+<div class="key"><b>一句話</b>2026 年 4 月之後才出現的一類，長得最快，也汰換得最快。</div>
+<p>把做簡報的手法包成技能給 coding agent 用。幾乎全部是 2026 年 4 月之後開的 repo。</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Repo</th><th>星</th><th>授權</th><th>最後更新</th><th>特色</th></tr></thead>
+  <tbody>
+    <tr><td><a href="https://github.com/zarazhangrui/frontend-slides">zarazhangrui/frontend-slides</a></td><td class="n">28.5k</td><td>MIT</td><td class="n">2026-06-23</td><td>讓 coding agent 用前端技能直接做網頁投影片，這類的起點</td></tr>
+    <tr><td><a href="https://github.com/op7418/guizang-ppt-skill">op7418/guizang-ppt-skill</a></td><td class="n">25.4k</td><td>AGPL-3.0</td><td class="n">2026-08-07</td><td>雜誌編輯風版式，這一類裡星數最高的 PPT skill</td></tr>
+    <tr><td><a href="https://github.com/alchaincyf/huashu-design">alchaincyf/huashu-design</a></td><td class="n">23.8k</td><td>MIT</td><td class="n">2026-08-25</td><td>HTML 原生設計 skill，不限投影片</td></tr>
+    <tr><td><a href="https://github.com/nicobailon/visual-explainer">nicobailon/visual-explainer</a></td><td class="n">9.6k</td><td>MIT</td><td class="n">2026-08-28</td><td>專做圖解與說明頁，適合技術簡報</td></tr>
+    <tr><td><a href="https://github.com/lewislulu/html-ppt-skill">lewislulu/html-ppt-skill</a></td><td class="n">8.2k</td><td>MIT</td><td class="n">2026-04-26</td><td>24 套主題、31 種版式、20 多種動畫；四個月沒動了</td></tr>
+    <tr><td><a href="https://github.com/chuspeeism/dashi-ppt-skill">chuspeeism/dashi-ppt-skill</a></td><td class="n">7.1k</td><td>AGPL-3.0</td><td class="n">2026-07-30</td><td>12 套主題、1020 版式，瀏覽器裡點著改，能匯出可編輯 PPTX</td></tr>
+    <tr><td><a href="https://github.com/ningzimu/codex-ppt-skill">ningzimu/codex-ppt-skill</a></td><td class="n">5.4k</td><td>MIT</td><td class="n">2026-07-30</td><td>走圖片式路線，用生圖模型畫每一頁</td></tr>
+    <tr><td><a href="https://github.com/zarazhangrui/beautiful-html-templates">zarazhangrui/beautiful-html-templates</a></td><td class="n">4.4k</td><td>MIT</td><td class="n">2026-06-09</td><td>純版式庫，讓 agent 自己挑，不綁流程</td></tr>
+    <tr><td><a href="https://github.com/JimLiu/baoyu-design">JimLiu/baoyu-design</a></td><td class="n">3.7k</td><td>MIT</td><td class="n">2026-07-30</td><td>把 Claude Design 那套搬成本機 skill</td></tr>
+    <tr><td><a href="https://github.com/op7418/NanoBanana-PPT-Skills">op7418/NanoBanana-PPT-Skills</a></td><td class="n">3.2k</td><td>未標</td><td class="n">2026-01-19</td><td>圖片式加轉場與影片，跟背景動畫那條路同源</td></tr>
+    <tr><td><a href="https://github.com/GordenSun/GordenPPTSkill">GordenSun/GordenPPTSkill</a></td><td class="n">3.0k</td><td>自訂</td><td class="n">2026-06-22</td><td>17 套中文 PPTX 範本，直接出 Office 檔</td></tr>
+    <tr><td><a href="https://github.com/ningzimu/image-to-editable-ppt-skill">ningzimu/image-to-editable-ppt-skill</a></td><td class="n">2.3k</td><td>MIT</td><td class="n">2026-07-28</td><td>把圖片式簡報與 PDF 逆向成可編輯 PPTX</td></tr>
+    <tr><td><a href="https://github.com/crazyykhllc-bit/CyberPPT">crazyykhllc-bit/CyberPPT</a></td><td class="n">1.7k</td><td>MIT</td><td class="n">2026-07-20</td><td>顧問風高密度版面，支援 SCR 敘事結構</td></tr>
+    <tr><td><a href="https://github.com/Binaryify/open-kimi-ppt-skill">Binaryify/open-kimi-ppt-skill</a></td><td class="n">1.6k</td><td>未標</td><td class="n">2026-08-07</td><td>非官方 Kimi Slides，附本機瀏覽器編輯器</td></tr>
+    <tr><td><a href="https://github.com/sunbigfly/ppt-agent-skills">sunbigfly/ppt-agent-skills</a></td><td class="n">889</td><td>自訂</td><td class="n">2026-06-08</td><td>把做簡報當軟體工程來管的框架</td></tr>
+    <tr><td><a href="https://github.com/Gabberflast/academic-pptx-skill">Gabberflast/academic-pptx-skill</a></td><td class="n">829</td><td>MIT</td><td class="n">2026-07-14</td><td>研討會與口試場合專用</td></tr>
+    <tr><td><a href="https://github.com/ItsssssJack/power-design">ItsssssJack/power-design</a></td><td class="n">644</td><td>自訂</td><td class="n">2026-08-10</td><td>主打「不要一看就知道是 AI 做的」，20 套編碼風格</td></tr>
+    <tr><td><a href="https://github.com/archlizheng/frontend-slides-editable">archlizheng/frontend-slides-editable</a></td><td class="n">478</td><td>MIT</td><td class="n">2026-07-01</td><td>可拖拉縮放的編輯模式</td></tr>
+    <tr><td><a href="https://github.com/ryanbbrown/revealjs-skill">ryanbbrown/revealjs-skill</a></td><td class="n">403</td><td>MIT</td><td class="n">2026-05-02</td><td>不自己造輪子，直接讓 agent 產 reveal.js</td></tr>
+    <tr><td><a href="https://github.com/robonuggets/marp-slides">robonuggets/marp-slides</a></td><td class="n">299</td><td>未標</td><td class="n">2026-04-08</td><td>同上，但走 Marp</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="e3"><span class="num">03</span>乙　傳統網頁簡報框架</h2>
+<div class="key"><b>一句話</b>活了十幾年，是上面那些 skill 的地基。挑的時候看兩件事：還有沒有在維護，以及寫的是 HTML 還是 Markdown。</div>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Repo</th><th>星</th><th>授權</th><th>最後更新</th><th>怎麼寫</th></tr></thead>
+  <tbody>
+    <tr><td><a href="https://github.com/hakimel/reveal.js">hakimel/reveal.js</a></td><td class="n">72.2k</td><td>MIT</td><td class="n">2026-08-24</td><td>HTML；這個領域的標準答案，2011 年至今還在動</td></tr>
+    <tr><td><a href="https://github.com/slidevjs/slidev">slidevjs/slidev</a></td><td class="n">48.4k</td><td>MIT</td><td class="n">2026-08-25</td><td>Markdown 加 Vue，開發者取向</td></tr>
+    <tr><td><a href="https://github.com/impress/impress.js">impress/impress.js</a></td><td class="n">38.2k</td><td>MIT</td><td class="n">2026-07-23</td><td>HTML；CSS3 位移縮放的無限畫布</td></tr>
+    <tr><td><a href="https://github.com/marp-team/marp">marp-team/marp</a></td><td class="n">12.4k</td><td>MIT</td><td class="n">2026-07-29</td><td>Markdown；有 <a href="https://github.com/marp-team/marp-cli">CLI</a> 與 VS Code 外掛</td></tr>
+    <tr><td><a href="https://github.com/webpro/reveal-md">webpro/reveal-md</a></td><td class="n">3.9k</td><td>MIT</td><td class="n">2026-02-14</td><td>Markdown 直接吐 reveal.js</td></tr>
+    <tr><td><a href="https://github.com/astefanutti/decktape">astefanutti/decktape</a></td><td class="n">2.4k</td><td>MIT</td><td class="n">2026-07-13</td><td>把網頁簡報轉成 PDF 的工具，本身不是框架</td></tr>
+    <tr><td><a href="https://github.com/inspire-js/inspire.js">inspire-js/inspire.js</a></td><td class="n">1.8k</td><td>MIT</td><td class="n">2026-06-10</td><td>極輕量，可拆可改</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="meta">這幾個已經停更，放著給考古用：<a href="https://github.com/jxnblk/mdx-deck">mdx-deck</a>（11.5k，2023-01 停）、<a href="https://github.com/webslides/WebSlides">WebSlides</a>（6.3k，2022-12 停）、<a href="https://github.com/imakewebthings/deck.js">deck.js</a>（5.4k，2019-01 停）、<a href="https://github.com/bespokejs/bespoke">bespoke</a>（4.8k，2020-09 停）。</p>
+
+<h2 id="e4"><span class="num">04</span>丙　端到端產品</h2>
+<div class="key"><b>一句話</b>整套服務，不以 skill 形式安裝。</div>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Repo</th><th>星</th><th>授權</th><th>最後更新</th><th>做什麼</th></tr></thead>
+  <tbody>
+    <tr><td><a href="https://github.com/nexu-io/open-design">nexu-io/open-design</a></td><td class="n">93.1k</td><td>Apache-2.0</td><td class="n">2026-08-31</td><td>Claude Design 的開源版本，這批裡星數最高</td></tr>
+    <tr><td><a href="https://github.com/hugohe3/ppt-master">hugohe3/ppt-master</a></td><td class="n">50.7k</td><td>MIT</td><td class="n">2026-08-31</td><td>文件或題目直接變原生 PowerPoint</td></tr>
+    <tr><td><a href="https://github.com/Anionex/banana-slides">Anionex/banana-slides</a></td><td class="n">15.5k</td><td>AGPL-3.0</td><td class="n">2026-08-31</td><td>可以餵任意範本圖片，自己解析風格</td></tr>
+    <tr><td><a href="https://github.com/nexu-io/html-anything">nexu-io/html-anything</a></td><td class="n">8.6k</td><td>Apache-2.0</td><td class="n">2026-08-23</td><td>本機 agent 寫 HTML、人在旁邊改</td></tr>
+    <tr><td><a href="https://github.com/sligter/LandPPT">sligter/LandPPT</a></td><td class="n">3.6k</td><td>自訂</td><td class="n">2026-08-02</td><td>可接多家模型的簡報生成平台</td></tr>
+    <tr><td><a href="https://github.com/arcsin1/oh-my-ppt">arcsin1/oh-my-ppt</a></td><td class="n">1.9k</td><td>Apache-2.0</td><td class="n">2026-08-27</td><td>簡報、課程、故事都能生</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="e5"><span class="num">05</span>丁　底層函式庫</h2>
+<div class="key"><b>一句話</b>要自己寫程式產 Office 檔的時候用。</div>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>Repo</th><th>星</th><th>授權</th><th>最後更新</th><th>做什麼</th></tr></thead>
+  <tbody>
+    <tr><td><a href="https://github.com/gitbrent/PptxGenJS">gitbrent/PptxGenJS</a></td><td class="n">6.1k</td><td>MIT</td><td class="n">2025-11-28</td><td>用 JavaScript 產 PPTX，瀏覽器與 Node 都能跑</td></tr>
+    <tr><td><a href="https://github.com/open-xml-templating/docxtemplater">docxtemplater</a></td><td class="n">3.6k</td><td>自訂</td><td class="n">2026-08-04</td><td>用範本填資料產 docx、pptx、xlsx</td></tr>
+    <tr><td><a href="https://github.com/Ziv-Barber/officegen">Ziv-Barber/officegen</a></td><td class="n">2.7k</td><td>MIT</td><td class="n">2024-04-30</td><td>老牌 Office Open XML 產生器</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="e6"><span class="num">06</span>選之前先看三件事</h2>
+<ol>
+  <li><strong>你要交出去的是什麼檔。</strong>要 PPTX 讓對方自己改，就往丙類或丁類找，或用有 PPTX 匯出的 skill。要上台講、要能內嵌真站，網頁簡報才成立。</li>
+  <li><strong>授權。</strong>這批裡有幾個是 AGPL-3.0（guizang、dashi、banana-slides）。自己做自己用沒事，但產物如果內嵌了它的 runtime 又放上公開網站或拿去商用，條款要自己看一眼。標「自訂」跟「未標」的更要小心，<strong>沒有 LICENSE 檔等於保留所有權利</strong>。</li>
+  <li><strong>還有沒有在動。</strong>甲類幾乎都是 2026 年 4 月後開的，其中好幾個已經三四個月沒更新。挑之前先看最後更新日期。</li>
+</ol>
+
+<h2 id="e7"><span class="num">07</span>我們為什麼自製</h2>
+<div class="key"><b>一句話</b>這一批 skill 都在解排版，我們卡的是講者現場。</div>
+
+<p>這台機器上裝著兩套，用途不重疊：自己寫的 <a href="https://github.com/yazelin/slide-deck-skill">slide-deck-skill</a>，跟裝來對照的 dashi-ppt-skill。</p>
+
+<div class="box">
+  <p><strong>順序要先講清楚</strong>：正確的做法是先跟 AI 討論出需求，再從需求開出功能規格，最後才做。下面這張表是倒著給你看的，因為功能早就做完了，它的用途是當證據，讓你檢查每一條功能背後都真的有一次需求。<strong>照著這張表從右往左推，方向是錯的。</strong></p>
+</div>
+
+<div class="tablewrap">
+<table>
+  <thead><tr><th>當初的需求（直播現場真的發生的事）</th><th>後來才做出來的功能</th></tr></thead>
+  <tbody>
+    <tr><td>要 demo 真站台，截圖是死的</td><td>單頁內嵌 iframe，按了才載，不是一翻到就連線</td></tr>
+    <tr><td>直播網路會出事，demo 掛掉就冷場</td><td>每個 demo 配一支預錄影片，按一下就切過去</td></tr>
+    <tr><td>觀眾用手機看串流，字會糊</td><td>單頁滿版、<code>clamp()</code> 字級、一頁一件事</td></tr>
+    <tr><td>九十分鐘的量記不住，念稿又很乾</td><td>講稿備註只出現在主控台，投影機那邊看不到</td></tr>
+    <tr><td>一定會超時，0826 那場規劃 90 分講了 169 分</td><td>PACE 每頁目標時間，超時計時器變紅</td></tr>
+    <tr><td>站台前離筆電遠</td><td>手機掃 QR 當遙控器</td></tr>
+    <tr><td>改完不知道有沒有改壞</td><td><code>deck-tools</code> 自動翻頁、抓排版溢出、抓 JS 錯誤</td></tr>
+  </tbody>
+</table>
+</div>
+<p>這七條裡面，沒有一條是「我想要更好看的版式」。這就是為什麼挑不到現成的。</p>
+
+<h3>換一個場合，答案就整個不一樣</h3>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>場合</th><th>需要什麼</th></tr></thead>
+  <tbody>
+    <tr><td>線上直播</td><td>內嵌 iframe、備援影片、節奏計時</td></tr>
+    <tr><td>會議室提案</td><td>能被打斷跳頁、有 appendix 深水區、印得出來發下去</td></tr>
+    <tr><td>交出去自己看</td><td>不需要備註，每頁要能自己站得住，要 PPTX 讓對方改</td></tr>
+    <tr><td>錄影課程</td><td>要章節標記，字幕交給後製</td></tr>
+  </tbody>
+</table>
+</div>
+<p>2026 年 8 月 31 日拿同一份發包單實跑過兩種場合，只有場合與時間答得不一樣，結果差很多：會議室那份砍到八頁、<code>deck.css</code> 少了 74 行、QR 那支檔案直接刪掉；線上直播那份留了十六頁與 iframe。<strong>最值得記的一列是手機遙控：兩份都砍掉。</strong>線上直播是螢幕分享，人坐在電腦前，遙控器是給你離開筆電、站在實體舞台上用的。</p>
+
+<h3>跟 dashi-ppt-skill 的差別</h3>
+<div class="box">
+  <p><strong>先講一件查證出來的事</strong>：dashi-ppt-skill 的作者，就是這份研究拆的那兩支影片的作者。模板檔 <code>project/assets/template-swiss.html</code> 第 1943 行的作者區塊寫著 <code>@大师的AI小灶</code>，並連到同一個 GitHub 帳號與其抖音、小紅書、Bilibili。</p>
+</div>
+<div class="tablewrap">
+<table>
+  <thead><tr><th></th><th>slide-deck-skill（自製）</th><th>dashi-ppt-skill</th></tr></thead>
+  <tbody>
+    <tr><td>為誰設計</td><td>站著講的人</td><td>交出去給人看的報告</td></tr>
+    <tr><td>講者支援</td><td>雙螢幕主控台、講稿備註、節奏計時、手機遙控</td><td>都沒有，見下方查證</td></tr>
+    <tr><td>視覺</td><td>一套 CSS，每場從被講的專案身上取色</td><td>12 套主題、1020 版式、8576 個可調控件</td></tr>
+    <tr><td>改稿</td><td>改 HTML 原始碼</td><td>瀏覽器裡點文字就地改、滑桿換版式</td></tr>
+    <tr><td>出檔</td><td>16:9 PDF 與 A4 講義</td><td>HTML 離線包、PDF、可編輯 PPTX</td></tr>
+    <tr><td>驗收</td><td><code>deck-tools</code> 機器檢查</td><td>明講不做截圖審美精修</td></tr>
+    <tr><td>體積</td><td>1.5 MB</td><td>127 MB（產物只帶其中一支主題 runtime，約 0.7 MB）</td></tr>
+    <tr><td>授權</td><td>MIT</td><td>AGPL-3.0</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4>查證一：dashi 有沒有講者主控台</h4>
+<p><strong>沒有。</strong>它畫面上那個「演示控制台」是編輯與匯出工具列，跟講者無關：播放預覽、匯出 HTML 離線包與 PDF 與 PPTX、重置、切語言、切明暗、左側縮圖目錄、預覽風格切換、十種換頁動畫、右側的可調控件面板。</p>
+<ul>
+  <li><code>speakernote</code>、<code>presenternote</code>、<code>演讲者备注</code>、<code>讲稿</code>：在模板、SKILL.md、README、版式清單裡<strong>零命中</strong>。搜到的「備註」全部是表格版式的欄位名。</li>
+  <li><code>window.open</code>、<code>BroadcastChannel</code>、<code>requestPresent</code>：在模板與 <code>scripts/</code> 裡<strong>零命中</strong>，所以沒有第二視窗或雙螢幕同步機制。</li>
+  <li>計時器：搜 <code>pace</code> 有命中，但逐一看過是字型名 <code>Space Grotesk</code> 的子字串，<strong>沒有計時功能</strong>。</li>
+</ul>
+
+<h4>查證二：AGPL 的產物到底有沒有內嵌 runtime</h4>
+<p><strong>HTML 產物會，PDF 與 PPTX 不會。</strong></p>
+<ul>
+  <li><code>src/renderDeck.jsx</code> 第 152 行每次算繪都會產生 <code>assets/imported-theme-runtime.js</code>，<code>scripts/validate-swiss-deck.mjs</code> 第 32 行還會檢查這個檔存在。所以<strong>任何一份 HTML 產物一定帶著它</strong>。</li>
+  <li>它是單主題自包含的 IIFE。<code>dist/theme-runtime/</code> 十二支合計 19 MB，單支介於 0.70 MB 到 0.77 MB 之間，一份 deck 只會帶用到的那一支。</li>
+  <li>PDF 走 Playwright 截圖，PPTX 走 <code>html-deck-to-pptx</code> 管線，兩者都是算繪結果，裡面沒有 JS。</li>
+</ul>
+<p><strong>可以照著做的結論</strong>：拿 dashi 做完，交 PDF 或 PPTX 給對方，不會碰到 AGPL 的散布條款。把匯出的 HTML 離線包放上公開網站或商用，就等於連同它的 runtime 一起散布，條款要自己看一眼（AGPL 的重點在第 13 條：透過網路提供服務也算散布，要提供對應原始碼）。</p>
+<p class="meta">這一段只是把原始碼翻出來看到什麼就寫什麼，沒有法律效力。真的要商用，條款請自己讀或問律師。</p>
+
+<h3>結論</h3>
+<p>兩個都留著。要交報告、要 PPTX 檔、對方要自己改字，dashi 贏；要上台講、要備註計時遙控、要當場內嵌真站台，自製這套贏。<strong>規格是自己的資產，乙方可以換。</strong></p>
+
+<footer>
+  <p>整理者：林亞澤．2026 年 9 月 1 日</p>
+  <p><a href="../">簡報背景怎麼做</a>　·　<a href="https://github.com/yazelin/slide-background-research">GitHub 原始碼</a></p>
+</footer>
+
+</div>
+<!-- yz-promo-footer v11 | 三件套+BMC 注意力效果 | https://github.com/yazelin/promo-footer-skill -->
+<script>
+(function(){"use strict";
+if(window.__yzPromoInit)return;window.__yzPromoInit=1;
+/* 開啟計數。只送站名,後端只記「哪天、哪站、幾次」,不存 IP、不設 cookie、不給識別碼。
+   有一半的作品是純靜態沒後端,以前根本不知道有沒有人在用。這行要放在下面那個
+   prefers-reduced-motion 的 return 之前,不然關動畫的人就不會被算到。 */
+try{if(location.hostname==="yazelin.github.io"&&navigator.sendBeacon)navigator.sendBeacon("https://k-rider-api.yazelinj303.workers.dev/hit?s=slide-background-research")}catch(e){}
+try{if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return}catch(e){}
+var REPO="slide-background-research",INJECT=false,ADDBLOG=true;
+var GH=REPO?"https://github.com/yazelin/"+REPO:"https://github.com/yazelin";
+var LINES=["嘿，這裡這裡，我是咖啡按鈕","我是一顆很努力的按鈕，求被點一下","噓，亞澤不知道我在偷偷拉贊助","你看我跳得這麼賣力，不請一杯嗎？","不請也沒關係，你來玩我就很開心","免費給你玩的，想寵亞澤再說","一杯咖啡，是下一個作品的燃料","你的咖啡會變成下一個作品，真的","咖啡因進入亞澤體內，程式碼就會自己寫完","亞澤說，有人請咖啡他會開心一整天","只是一杯咖啡，但亞澤會記得你","用愛發電中，咖啡因可提升發電效率","覺得好玩嗎？抖內一下下","這個網站沒有廣告，只有我這顆按鈕"];
+var ICONS={blog:'<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>',gh:'<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>',fb:'<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg>',bmc:'<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M20.216 6.415l-.132-.666c-.119-.598-.388-1.163-1.001-1.379-.197-.069-.42-.098-.57-.241-.152-.143-.196-.366-.231-.572-.065-.378-.125-.756-.192-1.133-.057-.325-.102-.69-.25-.987-.195-.4-.597-.634-.996-.788a5.723 5.723 0 00-.626-.194c-1-.263-2.05-.36-3.077-.416a25.834 25.834 0 00-3.7.062c-.915.083-1.88.184-2.75.5-.318.116-.646.256-.888.501-.297.302-.393.77-.177 1.146.154.267.415.456.692.58.36.162.737.284 1.123.366 1.075.238 2.189.331 3.287.37 1.218.05 2.437.01 3.65-.118.299-.033.598-.073.896-.119.352-.054.578-.513.474-.834-.124-.383-.457-.531-.834-.473-.466.074-.96.108-1.382.146-1.177.08-2.358.082-3.536.006a22.228 22.228 0 01-1.157-.107c-.086-.01-.18-.025-.258-.036-.243-.036-.484-.08-.724-.13-.111-.027-.111-.185 0-.212h.005c.277-.06.557-.108.838-.147h.002c.131-.009.263-.032.394-.048a25.076 25.076 0 013.426-.12c.674.019 1.347.067 2.017.144l.228.031c.267.04.533.088.798.145.392.085.895.113 1.07.542.055.137.08.288.111.431l.319 1.484a.237.237 0 01-.199.284h-.003c-.037.006-.075.01-.112.015a36.704 36.704 0 01-4.743.295 37.059 37.059 0 01-4.699-.304c-.14-.017-.293-.042-.417-.06-.326-.048-.649-.108-.973-.161-.393-.065-.768-.032-1.123.161-.29.16-.527.404-.675.701-.154.316-.199.66-.267 1-.069.34-.176.707-.135 1.056.087.753.613 1.365 1.37 1.502a39.69 39.69 0 0011.343.376.483.483 0 01.535.53l-.071.697-1.018 9.907c-.041.41-.047.832-.125 1.237-.122.637-.553 1.028-1.182 1.171-.577.131-1.165.2-1.756.205-.656.004-1.31-.025-1.966-.022-.699.004-1.556-.06-2.095-.58-.475-.458-.54-1.174-.605-1.793l-.731-7.013-.322-3.094c-.037-.351-.286-.695-.678-.678-.336.015-.718.3-.678.679l.228 2.185.949 9.112c.147 1.344 1.174 2.068 2.446 2.272.742.12 1.503.144 2.257.156.966.016 1.942.053 2.892-.122 1.408-.258 2.465-1.198 2.616-2.657.34-3.332.683-6.663 1.024-9.995l.215-2.087a.484.484 0 01.39-.426c.402-.078.787-.212 1.074-.518.455-.488.546-1.124.385-1.766zm-1.478.772c-.145.137-.363.201-.578.233-2.416.359-4.866.54-7.308.46-1.748-.06-3.477-.254-5.207-.498-.17-.024-.353-.055-.47-.18-.22-.236-.111-.71-.054-.995.052-.26.152-.609.463-.646.484-.057 1.046.148 1.526.22.577.088 1.156.159 1.737.212 2.48.226 5.002.19 7.472-.14.45-.06.899-.13 1.345-.21.399-.072.84-.206 1.08.206.166.281.188.657.162.974a.544.544 0 01-.169.364zm-6.159 3.9c-.862.37-1.84.788-3.109.788a5.884 5.884 0 01-1.569-.217l.877 9.004c.065.78.717 1.38 1.5 1.38 0 0 1.243.065 1.658.065.447 0 1.786-.065 1.786-.065.783 0 1.434-.6 1.499-1.38l.94-9.95a3.996 3.996 0 00-1.322-.238c-.826 0-1.491.284-2.26.613z"/></svg>'};
+var CSS="@keyframes yzIdle{0%,55%,100%{transform:translateY(0)}62%{transform:translateY(-4px)}70%{transform:translateY(0)}78%{transform:translateY(-2px)}84%{transform:translateY(0)}}"+
+".yz-idle{animation:yzIdle 2.6s ease-in-out infinite}"+
+"@keyframes yzHop{0%,100%{transform:translateY(0)}20%{transform:translateY(-6px) scale(1.04)}40%{transform:translateY(0) scale(1)}55%{transform:translateY(-3px)}70%{transform:translateY(0)}}"+
+".yz-hop{animation:yzHop .9s cubic-bezier(.36,.07,.19,.97)}"+
+".yz-bubble{position:fixed;z-index:2147483000;max-width:200px;padding:6px 11px;border-radius:14px;background:#fffdf7;color:#4a3f35;border:1px solid rgba(0,0,0,.1);box-shadow:0 4px 14px rgba(0,0,0,.18);font:13px/1.5 system-ui,-apple-system,'Noto Sans TC',sans-serif;pointer-events:none;opacity:0;transform:translateY(5px);transition:opacity .25s ease,transform .25s ease}"+
+".yz-bubble.yz-on{opacity:1;transform:translateY(0)}"+
+".yz-bubble::after{content:'';position:absolute;left:var(--yz-tail,50%);margin-left:-6px;border:6px solid transparent}"+
+".yz-bubble.yz-above::after{bottom:-6px;border-bottom:0;border-top:6px solid #fffdf7}"+
+".yz-bubble.yz-below::after{top:-6px;border-top:0;border-bottom:6px solid #fffdf7}"+
+".yz-cluster{position:fixed;right:12px;bottom:12px;z-index:2147482999;display:flex;gap:10px}"+
+".yz-cluster a{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:rgba(22,26,35,.72);color:#fff;border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(4px);transition:transform .15s,background .15s}"+
+".yz-cluster a:hover{transform:translateY(-2px);background:rgba(22,26,35,.92)}";
+var bubble,anchor;
+function addCss(){if(document.getElementById("yz-promo-css"))return;var s=document.createElement("style");s.id="yz-promo-css";s.textContent=CSS;document.head.appendChild(s)}
+function inFooter(el){try{return !!(el.closest&&el.closest('footer,nav,[class*="footer"],[id*="footer"]'))}catch(e){return false}}
+function findAnchor(){var as=document.querySelectorAll('a[href*="buymeacoffee.com/yazelin"]');if(!as.length)return null;
+var vis=[],i,r;for(i=0;i<as.length;i++){r=as[i].getBoundingClientRect();if(r.width||r.height)vis.push(as[i])}
+var pool=vis.length?vis:[].slice.call(as);
+for(i=0;i<pool.length;i++)if(inFooter(pool[i]))return pool[i];
+return pool[pool.length-1]}
+function inject(){if(!INJECT||findAnchor()||document.querySelector(".yz-cluster"))return;
+var n=document.createElement("nav");n.className="yz-cluster";n.setAttribute("aria-label","作者連結");
+n.innerHTML='<a href="'+GH+'" target="_blank" rel="noopener" aria-label="GitHub 原始碼" title="GitHub 原始碼">'+ICONS.gh+'</a>'+
+'<a href="https://www.facebook.com/yaze.lin.gm" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">'+ICONS.fb+'</a>'+
+'<a href="https://buymeacoffee.com/yazelin" target="_blank" rel="noopener" aria-label="請亞澤喝杯咖啡 Buy me a coffee" title="請亞澤喝杯咖啡 Buy me a coffee">'+ICONS.bmc+'</a>'+
+(ADDBLOG?'<a class="yz-blog" href="https://yazelin.github.io/" target="_blank" rel="noopener" aria-label="亞澤的部落格" title="亞澤的部落格">'+ICONS.blog+'</a>':'');
+document.body.appendChild(n)}
+function blogLinked(){var as=document.querySelectorAll('a[href^="https://yazelin.github.io"]');for(var i=0;i<as.length;i++){try{if(new URL(as[i].href).pathname==="/")return true}catch(e){}}return false}
+function addBlog(){if(!ADDBLOG||document.querySelector(".yz-blog")||blogLinked()||!inFooter(anchor))return;
+var c=anchor.cloneNode(true);c.classList.remove("yz-hop","yz-idle");c.classList.add("yz-blog");
+c.href="https://yazelin.github.io/";c.setAttribute("aria-label","亞澤的部落格");c.setAttribute("title","亞澤的部落格");
+if(c.querySelector("svg")){var hasText=!!c.textContent.trim();c.innerHTML=ICONS.blog+(hasText?"部落格":"")}else{c.textContent="部落格"}
+anchor.parentNode.insertBefore(c,anchor.nextSibling)}
+function hop(){anchor.classList.remove("yz-hop");void anchor.offsetWidth;anchor.classList.add("yz-hop")}
+var shown=0,MAX_SHOWS=3;
+function say(){if(document.hidden)return;var r=anchor.getBoundingClientRect();if(!r.width&&!r.height)return;if(r.bottom<0||r.top>innerHeight)return;shown++;
+bubble.textContent=LINES[Math.floor(Math.random()*LINES.length)];
+bubble.classList.remove("yz-on","yz-above","yz-below");
+bubble.style.left="0px";bubble.style.top="0px";
+var bw=bubble.offsetWidth,bh=bubble.offsetHeight,cx=r.left+r.width/2;
+var left=Math.max(8,Math.min(cx-bw/2,innerWidth-bw-8));
+var above=r.top-bh-12>=8;
+bubble.style.left=left+"px";
+bubble.style.top=(above?r.top-bh-12:r.bottom+12)+"px";
+bubble.classList.add(above?"yz-above":"yz-below");
+bubble.style.setProperty("--yz-tail",Math.max(12,Math.min(cx-left,bw-12))+"px");
+hop();
+requestAnimationFrame(function(){bubble.classList.add("yz-on")});
+setTimeout(function(){bubble.classList.remove("yz-on")},4200)}
+function start(){addCss();inject();anchor=findAnchor();if(!anchor)return false;
+try{if(getComputedStyle(anchor).display==="inline")anchor.style.display="inline-block"}catch(e){}
+anchor.classList.add("yz-idle");
+anchor.addEventListener("animationend",function(e){if(e.animationName==="yzHop")anchor.classList.remove("yz-hop")});
+try{addBlog()}catch(e){}
+bubble=document.createElement("div");bubble.className="yz-bubble";bubble.setAttribute("aria-hidden","true");document.body.appendChild(bubble);
+window.__yzPromo=say;
+(function loop(first){if(shown>=MAX_SHOWS)return;setTimeout(function(){say();loop(false)},first?18e3+Math.random()*12e3:9e4+Math.random()*9e4)})(true);
+return true}
+function boot(){var tries=0;(function t(){if(start())return;if(++tries<20)setTimeout(t,1500)})()}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
+</script>
+</body>
+</html>
