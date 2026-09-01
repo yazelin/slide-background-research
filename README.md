@@ -26,7 +26,10 @@ bash gen.sh          # 第一輪六張，攝影風（依 prompts.txt）
 bash gen2.sh         # 第二輪四張，深色超現實（依 prompts-r2.txt）
 bash gen3.sh         # 隨機性三張加配色三張（依 prompts-r3.txt）
 bash gen-retouch.sh  # 修丑圖三步，image-edit 模式
+bash motion.sh       # 從靜圖做無縫循環的運鏡影片（純 ffmpeg，不用生圖額度）
 ```
+
+`motion.sh` 的重點是把所有運鏡參數寫成 `1-cos(2*PI*on/N)`：這個式子首尾同值，所以第一幀跟最後一幀由結構保證一致，循環播放不會跳。實測首尾幀平均色差 0.46 與 2.54（滿分 255）。
 
 原片畫面上打出來的兩段完整提示詞逐字收在 `原片提示詞-第4集.md`，第二輪的配方就是從那裡拆出來的。
 

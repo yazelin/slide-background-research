@@ -3,6 +3,7 @@ r2-16x9/
 r3-16x9/
 fix-16x9/
 output/
+motion/
 shader-bg.png
 shader-shot.json
 shader-shot.b64

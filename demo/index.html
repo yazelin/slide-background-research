@@ -14,7 +14,7 @@
   #stage{position:absolute;inset:0;display:grid;place-items:center;padding:24px}
   .slide{position:relative;width:min(100%,calc((100vh - 140px) * 16 / 9));aspect-ratio:16/9;
          background:#111;border-radius:10px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6)}
-  .slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .slide img,.slide video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
   .txt{position:absolute;inset:0;pointer-events:none}
   .txt .t{position:absolute;width:44%;padding:0 1.6%}
   .t h2{font-size:clamp(18px,3.4cqw,52px);line-height:1.25;margin:0 0 .35em;letter-spacing:.03em;font-weight:700}
@@ -32,6 +32,14 @@
   .cover{position:absolute;inset:0;display:grid;place-content:center;gap:14px;
          text-align:center;padding:6%;background:linear-gradient(160deg,#141922,#0b0d10)}
   .cover h2{font-size:clamp(20px,4cqw,54px);margin:0}
+  .cover.intro{place-content:center;text-align:start;padding:6% 8%;gap:0}
+  .cover.intro h2{font-size:clamp(20px,3.6cqw,46px);margin:0 0 .4em}
+  .cover.intro .sub{font-size:clamp(11px,1.6cqw,21px);line-height:1.8;margin:0 0 1.4em;color:#cfd6e2}
+  .cover.intro .how{display:grid;gap:.7em;font-size:clamp(9px,1.28cqw,17px);line-height:1.75;color:#9aa3b2}
+  .cover.intro .how b{color:#f2f4f8;display:inline-block;min-width:7.5em;font-weight:600}
+  .cover.intro .from{margin:1.6em 0 0;font-size:clamp(9px,1.15cqw,15px);color:#7d8797}
+  .cover.intro .from a{color:#9db8e8}
+  .cover.intro kbd{margin-right:3px}
   .cover.note{place-content:center;text-align:start;padding:8% 10%}
   .cover.note h2{font-size:clamp(18px,3.2cqw,44px);margin-bottom:.5em}
   .cover.note p{font-size:clamp(10px,1.5cqw,19px);line-height:1.9;max-width:46em}
@@ -70,8 +78,7 @@
 const TITLE = { h: "揚帆起航　攜手並進", p: "2026 年度總結報告" };
 
 const SLIDES = [
-  { type: "cover", h: "簡報背景對照實驗",
-    p: "同一句標題，壓在十張自己生成的背景上。前六張是抓錯視覺語言的第一輪，後四張是照原片配方重做的。左右鍵翻頁，按 G 看機械量測的文字區判定。" },
+  { type: "intro" },
 
   { type: "note", h: "第一輪：三組 A/B 對照",
     p: "每組只動一個變數。這一輪的視覺語言是錯的，但對照關係仍然成立，所以留著。" },
@@ -88,13 +95,24 @@ const SLIDES = [
   { type: "note", h: "第一輪抓錯了視覺語言",
     p: "上面六張都是白天的實景照，因為我拿第 3 集那張「國家地理攝影風格」的提示詞塊，去做第 4 集的技巧。"
        + "第 4 集整支影片的封面沒有一張是紀實攝影，全部是深色超現實概念藝術。原片畫面上寫得很清楚："
-       + "「背景為深藍至黑色留白，宇航員及其周圍被暖金色主光源照亮，輪廓清晰、對比強烈，亮度明顯高於環境」。"
-       + "留白是暗場，主體要比環境亮。下面四張是照原片配方重做的。" },
+       + "「背景為深藍至黑色留白，主體被暖金色主光源照亮，輪廓清晰、對比強烈，亮度明顯高於環境」。"
+       + "留白是暗場，主體要比環境亮。下面四張是照這份配方重做的。" },
 
   { img: "assets/r2-galaxy-sailboat.jpg", key: "r2-galaxy-sailboat", cap: "重做　帆船在銀河中心" },
   { img: "assets/r2-glowing-horse.jpg", key: "r2-glowing-horse", cap: "重做　沙丘上發光的馬" },
   { img: "assets/r2-book-astronaut.jpg", key: "r2-book-astronaut", cap: "重做　書頁上加班的太空人" },
   { img: "assets/r2-giant-earth.jpg", key: "r2-giant-earth", cap: "重做　壓迫到地面的巨型星球" },
+
+  { type: "note", h: "把背景變成會動的",
+    p: "原片教的是圖生影片：靜態圖丟進去，加一句「以 XX 為中心，旋轉運鏡」。"
+       + "下面兩頁改用另一條路——直接拿第二輪那兩張靜圖，用 ffmpeg 做推近與平移，"
+       + "所有運鏡參數寫成 1-cos(2*PI*t) 的形式，所以第一幀跟最後一幀一定相同，"
+       + "循環播放不會跳。實測首尾幀平均色差 0.46 與 2.54（滿分 255）。" },
+
+  { type: "video", src: "assets/galaxy-push.mp4", key: "r2-galaxy-sailboat",
+    cap: "動態一　緩慢推近，12 秒無縫循環" },
+  { type: "video", src: "assets/horse-drift.mp4", key: "r2-glowing-horse",
+    cap: "動態二　推近加橫移，12 秒無縫循環" },
 
   { type: "result", h: "量測結果", p: "六個候選文字區裡，有幾個同時通過平坦度與對比度" },
 ];
@@ -186,8 +204,33 @@ function placement(key) {
 function render() {
   const s = SLIDES[idx];
   const el = document.getElementById("slide");
-  if (s.type === "cover") {
+  if (s.type === "intro") {
+    el.innerHTML = `<div class="cover intro">
+      <h2>簡報背景對照實驗</h2>
+      <p class="sub">一張 AI 生的背景圖好不好看，跟能不能拿來當簡報封面，是兩件事。<br>
+      這份實驗在測後面那件：<strong>標題壓上去之後，還讀得到嗎。</strong></p>
+      <div class="how">
+        <div><b>每一頁都一樣</b>同一句標題「揚帆起航　攜手並進」壓在不同做法的背景上。變的只有背景。</div>
+        <div><b>順序</b>前六張是第一輪，視覺語言抓錯了。中間一頁說明錯在哪。後四張是照原片配方重做的。</div>
+        <div><b>左下角那行</b>寫這一頁是哪個做法，以及標題被放到哪一塊。位置與字色都是程式照量測結果決定的，沒有手動調。</div>
+        <div><b>按 G 之後</b>畫面會疊上六塊候選文字區：綠框是過關、紅框是不過，每塊標著亮度標準差與對比度。
+             標準差要小於 0.12、白字或黑字至少一種對比度要大於 5.0，兩項都過才算一塊。</div>
+        <div><b>最後一頁</b>是總表，把每一組的「過關幾塊／6」並排列出來。</div>
+        <div><b>操作</b><kbd>←</kbd><kbd>→</kbd> 翻頁　<kbd>G</kbd> 疊判定　<kbd>T</kbd> 收掉標題只看背景</div>
+      </div>
+      <p class="from">出自 <a href="../" target="_top">簡報背景研究筆記</a></p>
+    </div>`;
+  } else if (s.type === "cover") {
     el.innerHTML = `<div class="cover"><h2>${s.h}</h2><p>${s.p}</p></div>`;
+  } else if (s.type === "video") {
+    const pl = placement(s.key);
+    const t = showText
+      ? `<div class="txt"><div class="t ink-${pl.ink}" style="left:${pl.left};top:${pl.top}">`
+        + `<h2>${TITLE.h}</h2><p>${TITLE.p}</p></div></div>`
+      : "";
+    el.innerHTML = `<video id="bgv" autoplay muted loop playsinline preload="auto"`
+                 + ` src="${s.src}"></video>${t}`
+                 + `<div class="caption">${s.cap}</div>`;
   } else if (s.type === "note") {
     el.innerHTML = `<div class="cover note"><h2>${s.h}</h2><p>${s.p}</p></div>`;
   } else if (s.type === "result") {

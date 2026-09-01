@@ -25,6 +25,7 @@
   h2 .num{color:var(--accent);font-variant-numeric:tabular-nums;margin-inline-end:.5em}
   h3{font-size:1.05rem;margin:32px 0 4px}
   h4{font-size:.98rem;margin:26px 0 2px;color:var(--ink)}
+  h5{font-size:.94rem;margin:22px 0 2px;color:var(--ink-soft);font-weight:600}
   figure{margin:20px 0}
   figure img{width:100%;display:block;border-radius:6px;border:1px solid var(--line);background:var(--card)}
   .grid2,.grid3,.grid4{display:grid;gap:10px}
@@ -201,7 +202,7 @@
 <h3>圖片偏靜態</h3>
 <p>用這句萬用公式，馬上得到很有空間感的動態效果：</p>
 <div class="recipe">以 XX 為中心，旋轉運鏡。</div>
-<p>需要固定主體位置時補一句就好，例如「以貨輪為中心，旋轉運鏡。保持貨輪在畫面中的位置不變。」本身已經有動態的畫面再疊一層旋轉運鏡，視覺衝擊力會再翻一倍。</p>
+<p>需要固定主體位置時補一句就好，例如「以貨輪為中心，旋轉運鏡。保持貨輪在畫面中的位置不變。」本身已經有動態的畫面再疊一層旋轉運鏡，畫面的張力會再翻一倍。</p>
 
 <h3>元素動態加運鏡的配方</h3>
 <div class="recipe">星雲順時針旋轉        + 環繞運鏡
@@ -217,7 +218,7 @@
   <p><strong>放進簡報裡的細節</strong>（來自文件版的高頻問題區）</p>
   <ul>
     <li>背景動畫用 mp4，不用 gif。</li>
-    <li>影片是圖生影片產出的，可以一鍵生成，也可以給定提示詞。</li>
+    <li>影片是圖生影片產出的，可以直接生成，也可以給定提示詞。</li>
     <li>插入後要記得設定自動播放，否則放映時會停在第一幀。</li>
   </ul>
 </div>
@@ -426,6 +427,40 @@
   <li><strong>去干擾與擴圖換了工具就不等價。</strong>去干擾沒做乾淨，右側那根電線桿三步都還在，數字甚至微幅倒退。擴留白那步更明顯：豆包的擴圖是把邊界往外推，這裡的模型是<strong>整張重畫</strong>，視角與比例都變了，天空變多是重新構圖的副作用。要真的擴圖，得找有 outpainting 的工具，不能靠提示詞叫模型「延伸畫面」。</li>
 </ul>
 
+
+<h4>五、動態背景，以及圖生影片這條路走不走得通</h4>
+<p>原片教的是圖生影片：靜圖丟進去，加一句「以 XX 為中心，旋轉運鏡」。我們手上能用的是自架在區網那台的 gemini-web（Veo）。查下來有三件事要先講清楚。</p>
+<ul>
+  <li><strong>影片能力只有一個帳號有。</strong><code>/api/capabilities</code> 實測回 <code>video_capable: [2]</code>，四個帳號裡只有第二個做得到。這跟外觀無關，服務是實際打開工具選單看「建立影片」在不在。</li>
+  <li><strong>那支 API 只吃文字，不吃圖。</strong><code>VideoRequest</code> 只有 <code>prompt</code> 與 <code>timeout</code> 兩個欄位，<code>generate_video()</code> 也沒有把參考檔傳下去。所以<strong>現成的路是文生影片，不是圖生影片</strong>，做不到「拿第二輪那張圖去動」。</li>
+  <li><strong>底層其實接得上。</strong>同一支 <code>_generate_media()</code> 已經有 <code>ref_path</code> 參數而且會把檔案掛上去，生音樂就是走這條。要補圖生影片，是在 <code>generate_video()</code> 把 <code>ref_path</code> 傳下去、在 <code>VideoRequest</code> 加兩個欄位，照生音樂那段抄。這是動到那台機器上的服務，還沒動。</li>
+</ul>
+<p>文生影片實跑了兩次，第一次等了 728 秒逾時。<strong>所以 Veo 這條目前還沒拿到成品。</strong></p>
+
+<h5>另一條不用等的路：從靜圖做無縫循環</h5>
+<p>拿第二輪那兩張靜圖，用 ffmpeg 的 <code>zoompan</code> 做推近與橫移。關鍵在於<strong>把所有運鏡參數寫成 <code>1-cos(2*PI*on/N)</code> 的形式</strong>：這個式子在第一幀與最後一幀的值相同，所以首尾幀<strong>由結構保證一致</strong>，循環播放不會跳。</p>
+<div class="recipe">z = 1 + 0.10 * (1 - cos(2*PI*on/N)) / 2      推近，一進一出回到原點
+x = iw/2 - iw/zoom/2 + iw*0.055 * (1 - cos(2*PI*on/N)) / 2   橫移，飄出去再飄回來</div>
+<p>驗法是抽出第一幀與最後一幀逐像素比對平均色差：</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>成品</th><th>長度</th><th>檔案大小</th><th>首尾幀平均色差</th></tr></thead>
+  <tbody>
+    <tr><td>銀河，緩慢推近</td><td>12 秒</td><td>1000 KB</td><td>2.54 / 255</td></tr>
+    <tr><td>沙丘，推近加橫移</td><td>12 秒</td><td>502 KB</td><td>0.46 / 255</td></tr>
+  </tbody>
+</table>
+</div>
+<p>剩下那 2.54 是 H.264 在銀河那種密集紋理上的壓縮雜訊，不是畫面跳動。<strong>這條路比 AI 的首尾幀同圖更可靠</strong>，因為無縫是算出來的，不是模型猜出來的。代價是它只能做推近與平移，<strong>做不出真正的環繞</strong>。平面的一張圖沒有深度資訊，繞不過去，這正是原片那句「以 XX 為中心，旋轉運鏡」非得靠圖生影片的原因。</p>
+<p>第三條路是第 9 節那支 shader，它本身就在連續旋轉，檔案大小是零，任意解析度。要的是「會轉的抽象背景」時它最划算。</p>
+
+<h5>嵌進投影片自動播放，實測結果</h5>
+<p>把兩支 mp4 放進<a href="demo/">對照實驗投影片</a>的第 15、16 頁，用 <code>&lt;video autoplay muted loop playsinline&gt;</code>。在 Chrome 實測讀回來的狀態：</p>
+<div class="recipe">paused: false      muted: true       loop: true
+readyState: 4      duration: 12      解析度 1600x900
+播放時間 2.97 秒 → 4.77 秒（確實在前進）</div>
+<p><strong>會自動播放，前提是 <code>muted</code>。</strong>瀏覽器擋的是有聲音的自動播放，背景影片本來就不需要聲音，加上 <code>muted</code> 就不會被擋。<code>playsinline</code> 是給 iOS 用的，少了它 iPhone 會跳全螢幕播放器。</p>
+
 <div class="box warn">
   <p><strong>這組實驗的限制</strong></p>
   <ul>
@@ -437,7 +472,7 @@
 </div>
 
 <h2 id="c11"><span class="num">11</span>開源網頁簡報生態盤點</h2>
-<p>2026 年這個賽道非常擠。下面是 2026 年 9 月 1 日從 GitHub 撈出來、篩掉雜訊之後的清單，星數與最後更新日期都是當天的值。</p>
+<p>2026 年這個題目非常擠。下面是 2026 年 9 月 1 日從 GitHub 撈出來、篩掉雜訊之後的清單，星數與最後更新日期都是當天的值。</p>
 
 <h3>甲　AI Agent Skill：把做簡報的手法包成技能給 coding agent 用</h3>
 <p>這一類 2026 年才出現，幾乎全部是 2026 年 4 月之後開的 repo，成長速度也最猛。</p>
@@ -518,7 +553,7 @@
 <ol>
   <li><strong>你要交出去的是什麼檔。</strong>要 PPTX 讓對方自己改，就往丙類或丁類找，或用有 PPTX 匯出的 skill。要上台講、要能內嵌真站，網頁簡報才成立。</li>
   <li><strong>授權。</strong>這批裡有幾個是 AGPL-3.0（guizang、dashi、banana-slides）。自己做自己用沒事，但產物如果內嵌了它的 runtime 又放上公開網站或拿去商用，條款要自己看一眼。標「自訂」跟「未標」的那幾個更要小心，沒有 LICENSE 檔等於保留所有權利。</li>
-  <li><strong>還有沒有在動。</strong>甲類幾乎都是 2026 年 4 月後開的，其中好幾個已經三四個月沒更新。這個賽道汰換很快，挑之前先看最後更新日期。</li>
+  <li><strong>還有沒有在動。</strong>甲類幾乎都是 2026 年 4 月後開的，其中好幾個已經三四個月沒更新。這一塊汰換很快，挑之前先看最後更新日期。</li>
 </ol>
 
 <h3>我們自己在用的，以及為什麼自製</h3>
@@ -535,7 +570,7 @@
   <thead><tr><th>當初的需求（直播現場真的發生的事）</th><th>後來才做出來的功能</th></tr></thead>
   <tbody>
     <tr><td>要 demo 真站台，截圖是死的</td><td>單頁內嵌 iframe，按了才載，不是一翻到就連線</td></tr>
-    <tr><td>直播網路會出事，demo 掛掉就冷場</td><td>每個 demo 配一支預錄影片，一鍵切換</td></tr>
+    <tr><td>直播網路會出事，demo 掛掉就冷場</td><td>每個 demo 配一支預錄影片，按一下就切過去</td></tr>
     <tr><td>觀眾用手機看串流，字會糊</td><td>單頁滿版、<code>clamp()</code> 字級、一頁一件事</td></tr>
     <tr><td>九十分鐘的量記不住，念稿又很乾</td><td>講稿備註只出現在主控台，投影機那邊看不到</td></tr>
     <tr><td>一定會超時，0826 那場規劃 90 分講了 169 分</td><td>PACE 每頁目標時間，超時計時器變紅</td></tr>
@@ -545,7 +580,7 @@
 </table>
 </div>
 
-<p>這七條裡面，沒有一條是「我想要更好看的版式」。這就是為什麼挑不到現成的：<strong>這個賽道上的 skill 都在解排版，我們卡的是講者現場。</strong></p>
+<p>這七條裡面，沒有一條是「我想要更好看的版式」。這就是為什麼挑不到現成的：<strong>這一批 skill 都在解排版，我們卡的是講者現場。</strong></p>
 
 <h4>換一個場合，答案就整個不一樣</h4>
 <p>同一套需求換個場合會得出完全不同的功能清單。這也是自製的另一個理由，因為現成的 skill 沒辦法讓你砍功能。</p>
@@ -667,6 +702,9 @@
     <tr><td>用程式也能畫出能放字的背景</td><td>自己寫一支純 WebGL shader 再量</td><td>6/6、對比 20.30、平坦度 0.0004，<strong>比所有 AI 生的圖乾淨</strong></td></tr>
     <tr><td>修丑圖三步換掉豆包還成立嗎</td><td>生一張爛圖再跑三步</td><td>2/6 修到 4/6。換天氣與壓暗可複製；<strong>去干擾沒做乾淨、擴圖變成整張重畫</strong></td></tr>
     <tr><td>dashi-ppt-skill 有沒有講者主控台</td><td>翻原始碼逐項搜關鍵字</td><td><strong>沒有</strong>。詳見第 11 節的查證一</td></tr>
+    <tr><td>從靜圖做無縫循環的運鏡</td><td>ffmpeg 把運鏡寫成 1-cos 形式，再抽首尾幀比對</td><td>平均色差 0.46 與 2.54 / 255，<strong>由結構保證接得上</strong></td></tr>
+    <tr><td>背景影片能不能在投影片裡自動播放</td><td>嵌進投影片，讀瀏覽器回報的播放狀態</td><td><strong>會</strong>，前提是 <code>muted</code>；播放時間確實在前進</td></tr>
+    <tr><td>自架的 Veo 能不能做圖生影片</td><td>讀 API 與原始碼，並實跑兩次</td><td><strong>目前只能文生影片</strong>，API 不吃圖；實跑第一次 728 秒逾時</td></tr>
     <tr><td>dashi 的產物會不會內嵌 AGPL runtime</td><td>翻算繪與匯出的原始碼</td><td><strong>HTML 會、PDF 與 PPTX 不會</strong>。詳見查證二</td></tr>
   </tbody>
 </table>
@@ -682,7 +720,7 @@
 </ul>
 
 <div class="box">
-  <p><strong>下一步</strong>：把動態背景補起來。挑第二輪那四張各跑一次圖生影片，用「以 XX 為中心，旋轉運鏡」與首尾幀同圖兩種做法，然後把成品嵌進投影片實測自動播放。這是唯一還沒有證據、卻在台上一定會被問到的一段。</p>
+  <p><strong>下一步</strong>：真正的圖生影片還缺一塊。要嘛替自架的 gemini-web 補上參考圖那兩個欄位（底層的 <code>ref_path</code> 已經有了，改動不大，但那是動到區網那台的服務），要嘛換一個吃得下圖的服務。在那之前，台上能給的答案是：<strong>推近與平移用 ffmpeg 做，無縫循環比 AI 可靠；真正的環繞運鏡目前做不到。</strong></p>
 </div>
 
 <h2 id="c14"><span class="num">14</span>素材與出處</h2>
