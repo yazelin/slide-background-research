@@ -1,1 +1,8 @@
 raw/
+r2-16x9/
+r3-16x9/
+fix-16x9/
+output/
+shader-bg.png
+shader-shot.json
+shader-shot.b64

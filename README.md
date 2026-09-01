@@ -13,19 +13,24 @@
 - 提示詞的四段結構，附中英提示詞塊對照表
 - 靜態圖轉動態背景的運鏡公式與無限循環做法
 - 手上已有醜圖的三步搶救法，以及整份簡報沒有圖的時候怎麼辦
-- **我們自己跑的 A/B 對照實驗**：六張自己生的圖，機械量測「還放不放得下字」
+- **我們自己跑的對照實驗**：十九張自己生的圖加一支自己寫的 WebGL 背景，全部機械量測「還放不放得下字」。含一次抓錯視覺語言再修正的完整過程
 - **開源網頁簡報生態盤點**：36 個 repo 分四類，含授權地雷與怎麼選
 - 我們為什麼自製 slide-deck-skill，需求是什麼，跟 dashi-ppt-skill 差在哪
 
 ## experiments/
 
 ```bash
-python3 verify.py --self-check     # 工具本身的負控制
-python3 verify.py raw/*.png        # 量測，寫出 verify-result.json
-bash gen.sh                        # 依 prompts.txt 重生六張圖（走 Codex CLI $imagegen）
+python3 verify.py --self-check                 # 工具本身的負控制
+python3 verify.py raw/*.png r2-16x9/*.png      # 量測，寫出 verify-result.json
+bash gen.sh          # 第一輪六張，攝影風（依 prompts.txt）
+bash gen2.sh         # 第二輪四張，深色超現實（依 prompts-r2.txt）
+bash gen3.sh         # 隨機性三張加配色三張（依 prompts-r3.txt）
+bash gen-retouch.sh  # 修丑圖三步，image-edit 模式
 ```
 
-`raw/` 沒有進 git（原圖 1.6 到 1.8 MB 一張），repo 裡只放縮到 1600×900 的 JPEG，在 `demo/assets/`。
+原片畫面上打出來的兩段完整提示詞逐字收在 `原片提示詞-第4集.md`，第二輪的配方就是從那裡拆出來的。
+
+`raw/` 與各個 16:9 裁切目錄都沒有進 git（原圖 1.6 到 2.6 MB 一張）。repo 裡只放縮過的 JPEG：投影片用的在 `demo/assets/`，筆記頁用的在 `img/`。
 
 `verify.py` 把畫面切成六個候選文字區，每區量亮度標準差（要小於 0.12）與白字或黑字的 WCAG 對比度（至少一種要大於 5.0）。門檻訂 5.0 是因為任何平坦色塊都過得了 4.5，那條線擋不住東西。
 

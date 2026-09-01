@@ -25,6 +25,14 @@
   h2 .num{color:var(--accent);font-variant-numeric:tabular-nums;margin-inline-end:.5em}
   h3{font-size:1.05rem;margin:32px 0 4px}
   h4{font-size:.98rem;margin:26px 0 2px;color:var(--ink)}
+  figure{margin:20px 0}
+  figure img{width:100%;display:block;border-radius:6px;border:1px solid var(--line);background:var(--card)}
+  .grid2,.grid3,.grid4{display:grid;gap:10px}
+  .grid2{grid-template-columns:repeat(2,1fr)}
+  .grid3{grid-template-columns:repeat(3,1fr)}
+  .grid4{grid-template-columns:repeat(2,1fr)}
+  @media (max-width:560px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+  figcaption{grid-column:1/-1;color:var(--ink-soft);font-size:.85rem;margin-top:6px;line-height:1.6}
   p{margin:14px 0}
   ul,ol{padding-inline-start:1.4em;margin:14px 0}
   li{margin:6px 0}
@@ -57,7 +65,7 @@
   <h1>簡報背景研究筆記</h1>
   <p class="sub">拆解兩支影片與三份對照文件，整理成一套可以照著做的背景圖方法。</p>
   <p class="meta">整理日期：2026 年 9 月 1 日．方法拆自 YouTube 頻道「大师的AI小灶」第 3、4 集與其飛書文件版，對照實驗與生態盤點是我們自己做的</p>
-  <p><a href="demo/">先看對照實驗投影片</a>　六張自己生的背景，同一句標題壓上去，附機械量測</p>
+  <p><a href="demo/">先看對照實驗投影片</a>　十張自己生的背景，同一句標題壓上去，附機械量測</p>
 </header>
 
 <div class="toc">
@@ -75,7 +83,7 @@
     <li><a href="#c10">我們自己跑的對照實驗</a></li>
     <li><a href="#c11">開源網頁簡報生態盤點</a></li>
     <li><a href="#c12">動手前的檢查清單</a></li>
-    <li><a href="#c13">我還沒驗證的部分</a></li>
+    <li><a href="#c13">驗過的與還沒驗的</a></li>
     <li><a href="#c14">素材與出處</a></li>
   </ol>
 </div>
@@ -88,7 +96,8 @@
   <li><strong>震撼感來自對比，不來自尺寸。</strong>一個很大的東西單獨放著沒有力量，把很小的東西放進很大的環境才有。</li>
   <li><strong>一張平淡的圖，加一個發光點就有了視覺中心。</strong>這是成本最低的一招。</li>
   <li><strong>動態背景的門檻比想像中低。</strong>圖生影片的提示詞可以短到只有一句運鏡指令。</li>
-  <li><strong>尺度失衡要付代價。</strong>這是我們自己跑對照實驗才發現的：它把可放字的區域從四塊壓到三塊，換來的張力是拿留白換的。加光那一招則沒有代價。</li>
+  <li><strong>尺度失衡要付代價。</strong>自己跑對照實驗才發現的：它把可放字的區域從四塊壓到三塊，換來的張力是拿留白換的。加光那一招則沒有代價。</li>
+  <li><strong>留白是暗場，不是亮天空。</strong>這是原片配方裡最關鍵、也最容易漏掉的一條。改成深藍到黑的暗場之後，白字對比從個位數跳到二十上下。</li>
 </ol>
 
 <h2 id="c2"><span class="num">02</span>判準：什麼樣的圖能當背景</h2>
@@ -249,23 +258,22 @@
 </div>
 
 <h2 id="c10"><span class="num">10</span>我們自己跑的對照實驗</h2>
-<p>上面九節都是別人講的。這一節是我們自己動手跑出來的，用來檢查那些說法站不站得住。</p>
+<p>前面九節都是別人講的。這一節是自己動手跑出來的，包含一次抓錯方向再修正的完整過程。</p>
 
 <h3>怎麼跑的</h3>
 <ul>
-  <li>生了 <strong>6 張圖</strong>，走本機 Codex CLI 的 <code>$imagegen</code>（吃 ChatGPT 訂閱額度；沒有走 OpenAI Images API，也沒有走 <code>.11</code> 那台的服務）。原圖 1672×941，進 repo 前縮成 1600×900 的 JPEG。</li>
-  <li>三組 A/B 對照，<strong>每組只動一個變數</strong>：A 組比提示詞寫法，B 組比尺度，C 組比光。</li>
+  <li>圖走本機 Codex CLI 的 <code>$imagegen</code>（吃 ChatGPT 訂閱額度；沒有走 OpenAI Images API，也沒有走 <code>.11</code> 那台的服務）。進 repo 前一律轉成 1600×900 的 JPEG。</li>
   <li>驗收交給程式，不靠眼睛。<code>experiments/verify.py</code> 把畫面切成六個候選文字區，每區量兩件事：亮度標準差要小於 0.12（花紋太多字會被吃掉），白字或黑字至少一種的 WCAG 對比度要大於 5.0。</li>
   <li>門檻拉到 5.0 是有原因的：任何平坦色塊都過得了 WCAG 的 4.5，那條線擋不住任何東西。5.0 才擋得住「既不夠亮也不夠暗」的中間調。</li>
-  <li>工具本身也有負控制。<code>python3 verify.py --self-check</code> 會確認純黑圖六區全過、隨機雜訊圖一區都不過、中間調死區不過。</li>
+  <li>工具本身有負控制。<code>python3 verify.py --self-check</code> 會確認純黑圖六區全過、隨機雜訊圖一區都不過、中間調死區不過、中灰以黑字過關。</li>
 </ul>
 
 <div class="box">
-  <p><strong>看實際效果</strong>：<a href="demo/">開對照實驗投影片</a>　同一句「揚帆起航　攜手並進」壓在六張背景上，左右鍵翻頁。按 <code>G</code> 會把六個候選區與量測數字疊上去，按 <code>T</code> 收掉標題。</p>
-  <p>標題放在哪一區、用白字還是黑字，是程式照量測結果決定的，不是我手動調的。</p>
+  <p><strong>看實際效果</strong>：<a href="demo/">開對照實驗投影片</a>　同一句「揚帆起航　攜手並進」壓在每一張背景上，左右鍵翻頁。按 <code>G</code> 會把六個候選區與量測數字疊上去，按 <code>T</code> 收掉標題。</p>
+  <p>標題放在哪一區、用白字還是黑字，是程式照量測結果決定的，不是手動調的。</p>
 </div>
 
-<h3>結果</h3>
+<h3>第一輪：三組 A/B，每組只動一個變數</h3>
 <div class="tablewrap">
 <table>
   <thead><tr><th>對照組</th><th>前</th><th>可放字區</th><th>後</th><th>可放字區</th><th>結論</th></tr></thead>
@@ -276,17 +284,156 @@
   </tbody>
 </table>
 </div>
-
-<h3>三個發現</h3>
 <ol>
-  <li><strong>四段結構確實有效，而且看得出是為什麼。</strong>一句話那張，帆船站在畫面正中偏右，桅杆從下到上把整片天空切開，六個候選區只有左上過關。四段那張，船縮到右下角，天空整片留白，過關區變成三個。把標題壓上去的差別更直接：一句話那張的標題會撞到帆，四段那張放得下。</li>
-  <li><strong>尺度失衡是有代價的，而且沒人講過。</strong>風暴眼裡的小帆船張力很強，但風暴雲填滿了整個畫面，可放字的區域從四個掉到三個，唯一夠平坦的是右下那塊暗角。這一招換來的是敘事張力，付出的是留白。要用就要接受標題只有一個位置可以放。</li>
-  <li><strong>光這一招沒有代價。</strong>過關區維持六個，代表區的對比度還從 10.53 拉到 13.61。加一道發光脈絡沒有動到任何一塊留白，卻讓畫面有了視覺中心。三招裡它的投報率最高，也最適合拿別人給的圖來救。</li>
+  <li><strong>四段結構確實有效。</strong>一句話那張，帆船站在畫面正中偏右，桅杆把整片天空切開，只有左上過關。四段那張，船縮到右下角，天空整片留白。把標題壓上去的差別很直接：一句話那張的標題會撞到帆。</li>
+  <li><strong>尺度失衡是有代價的。</strong>風暴眼裡的小帆船張力很強，但風暴雲填滿整個畫面，可放字的區域從四個掉到三個，唯一夠平坦的是右下那塊暗角。</li>
+  <li><strong>光沒有代價。</strong>過關區維持六個，代表區的對比度還從 10.53 拉到 13.61。</li>
 </ol>
 
+<h3>然後發現第一輪抓錯了視覺語言</h3>
+<p>第一輪六張圖全部是白天的實景照，跟原片封面的樣子差很遠。回去逐幀看原片才發現原因：<strong>我拿第 3 集的提示詞塊，去做第 4 集的技巧。</strong></p>
+<p>第 4 集的影片畫面上直接把完整提示詞打出來了，逐字讀回來是這樣（原文為簡體，照原樣引用）：</p>
+<blockquote>
+  <p>提示词：一个宇航员坠落在银河中心。倾斜构图。银河由恒星、柔和星云与细腻星尘构成。银河整体呈现流动、半透明的光带形态，如同被引力弯曲的银河旋臂，空间干净而开阔，<strong>背景为深蓝至黑色留白</strong>。宇航员及其周围<strong>被暖金色主光源照亮</strong>，宇航员轮廓清晰、对比强烈，<strong>亮度明显高于环境</strong>，强调尺度对比与孤独感。 极简风格，超现实宇宙场景，超广角视角，电影级光照，轻体积光获奖摄影作品。</p>  <!-- speak-tw-ok 逐字引用原片畫面上的簡體提示詞 -->
+</blockquote>
+<blockquote>
+  <p>提示词：<strong>前景</strong>：一名宇航员在画面的左下角，背对镜头坐在崎岖岩石上，穿着写实宇航服，仰望天空上的地球，荒凉的岩石地貌延伸至地平线。<strong>远景</strong>：薄雾般的云海与低矮山峰，天空中一颗巨大地球占据画面上方，地球边缘带有冷色轮廓光，深空背景布满恒星、星云与微弱星尘。整体色调偏冷的深蓝、灰蓝与暗褐色。高对比，电影级光影，史诗感与孤独感并存，超写实，科幻概念艺术，8K，高细节，宽画幅构图</p>  <!-- speak-tw-ok 逐字引用原片畫面上的簡體提示詞 -->
+</blockquote>
+
+<h4>拆出來的六段結構</h4>
+<ol>
+  <li><strong>前景與遠景分開寫</strong>。前景交代主體在畫面哪個角、姿態、朝向；遠景交代環境層次。</li>
+  <li><strong>主體極小、環境極大</strong>。明寫「強調尺度對比與孤獨感」。</li>
+  <li><strong>留白是暗場</strong>。「空間乾淨而開闊，背景為深藍至黑色留白」。這是我漏掉最關鍵的一條。</li>
+  <li><strong>主體要比環境亮</strong>。「被暖金色主光源照亮，輪廓清晰、對比強烈，亮度明顯高於環境」。標題那兩個字「點亮」就是這個意思。</li>
+  <li><strong>冷色調加高對比</strong>。深藍、灰藍、暗褐。</li>
+  <li><strong>風格詞收尾</strong>。極簡風格、超現實、超廣角視角、電影級光照、輕體積光、科幻概念藝術、8K、高細節、寬畫幅構圖。</li>
+</ol>
+<p>對照第 3 集文件版那張表（留白充足／主體宏大／光影對比／真實攝影感），它的案例是飛機、貨輪、燈塔、衝浪者，<strong>全部是白天的紀實攝影</strong>。第 4 集整支影片的封面則沒有一張是紀實攝影，全部是深色超現實概念藝術。<strong>兩集的視覺語言不同，提示詞不能混用。</strong>第一輪就是混用了，所以生出普通的風景照。</p>
+
+<h3>第二輪：照原片配方重做</h3>
+<p>四張新圖，四個主體都取自原片示範過的題材：銀河中心的帆船、沙丘上發光的馬、書頁上加班的太空人、壓迫到地面的巨型星球。</p>
+<figure class="grid4">
+  <img loading="lazy" src="img/r2-galaxy-sailboat.jpg" alt="帆船在銀河中心，大片暗場留白">
+  <img loading="lazy" src="img/r2-glowing-horse.jpg" alt="沙丘上一匹發光的馬，其餘全暗">
+  <img loading="lazy" src="img/r2-book-astronaut.jpg" alt="書頁上加班的太空人，頭上冒出彩虹能量流">
+  <img loading="lazy" src="img/r2-giant-earth.jpg" alt="太空人坐在岩石上仰望佔滿上半畫面的地球">
+  <figcaption>第二輪：留白改成深藍到黑的暗場，主體被單一光源照亮且明顯比環境亮</figcaption>
+</figure>
+<p>放在一起比最清楚。第一輪的六張長這樣：</p>
+<figure class="grid3">
+  <img loading="lazy" src="img/a1-naive.jpg" alt="一句話提示詞生出的帆船照">
+  <img loading="lazy" src="img/a2-four-part.jpg" alt="四段結構提示詞生出的黃昏帆船照">
+  <img loading="lazy" src="img/b1-normal-scale.jpg" alt="正常尺度的帆船">
+  <img loading="lazy" src="img/b2-scale-break.jpg" alt="風暴眼中央的小帆船">
+  <img loading="lazy" src="img/c1-flat-light.jpg" alt="平光的深藍山脈">
+  <img loading="lazy" src="img/c2-glow.jpg" alt="加了流金脈絡的深藍山脈">
+  <figcaption>第一輪：全部是白天的實景照，跟原片封面的樣子差很遠</figcaption>
+</figure>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>兩輪比較</th><th>可放字區</th><th>代表區對比度</th><th>代表區平坦度 std</th></tr></thead>
+  <tbody>
+    <tr><td>第一輪　攝影風（6 張）</td><td>1 到 6 / 6</td><td>5.25 到 13.61</td><td>0.0339 到 0.1198</td></tr>
+    <tr><td>第二輪　深色超現實（4 張）</td><td>4 到 6 / 6</td><td><strong>14.39 到 20.66</strong></td><td><strong>0.0003 到 0.0570</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong>暗場留白不只比較好看，量測上也高出一個量級。</strong>對比度整體從個位數跳到二十上下，平坦度最好的一張是 0.0003，代表左上那整塊幾乎是純淨的暗場。這很合理：亮天空的雲、水面的波紋都是花紋，暗場沒有。</p>
+
+<h3>追加驗證的四件事</h3>
+
+<h4>一、生圖的隨機性會不會毀掉這套方法</h4>
+<figure class="grid3">
+  <img loading="lazy" src="img/r3-repeat-1.jpg" alt="同一提示詞第一次的結果">
+  <img loading="lazy" src="img/r3-repeat-2.jpg" alt="同一提示詞第二次的結果">
+  <img loading="lazy" src="img/r3-repeat-3.jpg" alt="同一提示詞第三次的結果">
+  <figcaption>同一組提示詞跑三次：構圖每次都變，可用性沒變</figcaption>
+</figure>
+<p>拿發光的馬那組提示詞<strong>原封不動跑三次</strong>。畫面內容確實每次都不同（馬的位置、沙丘形狀、鏡頭高度都會變），但量測結果幾乎一樣：</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th></th><th>第一次</th><th>第二次</th><th>第三次</th></tr></thead>
+  <tbody>
+    <tr><td>可放字區</td><td>6 / 6</td><td>6 / 6</td><td>6 / 6</td></tr>
+    <tr><td>代表區</td><td>右上</td><td>左上</td><td>右上</td></tr>
+    <tr><td>白字對比</td><td>20.00</td><td>20.76</td><td>20.73</td></tr>
+  </tbody>
+</table>
+</div>
+<p>結論：<strong>隨機的是構圖，不是可用性。</strong>只要結構寫死（暗場留白加單一發光主體），每次都放得下字，只是標題該放左上還右上要看那一張。這也是為什麼投影片裡的標題位置是讓程式決定的。</p>
+
+<h4>二、「配色可以隨便換」是真的嗎</h4>
+<p>同一組提示詞只換發光顏色，跑了青綠、洋紅、翠綠三種：</p>
+<figure class="grid3">
+  <img loading="lazy" src="img/r3-colour-teal.jpg" alt="青綠色發光的馬">
+  <img loading="lazy" src="img/r3-colour-magenta.jpg" alt="洋紅色發光的馬">
+  <img loading="lazy" src="img/r3-colour-green.jpg" alt="翠綠色發光的馬">
+  <figcaption>只換發光顏色，結構一字未動</figcaption>
+</figure>
+<div class="tablewrap">
+<table>
+  <thead><tr><th></th><th>暖金（原版）</th><th>青綠</th><th>洋紅</th><th>翠綠</th></tr></thead>
+  <tbody>
+    <tr><td>可放字區</td><td>6 / 6</td><td>6 / 6</td><td>6 / 6</td><td>6 / 6</td></tr>
+    <tr><td>白字對比</td><td>20.49</td><td>20.97</td><td>20.83</td><td>20.75</td></tr>
+  </tbody>
+</table>
+</div>
+<p>結論：<strong>成立，但有前提。</strong>顏色隨便換都好看，是因為結構沒動。換顏色不會動到暗場與發光主體的關係，所以量測分數幾乎不變。這句話的完整版應該是「結構對了以後，配色可以隨便換」。</p>
+
+<h4>三、第 9 節那條「用程式畫背景」自己做一次</h4>
+<figure>
+  <img loading="lazy" src="img/shader-bg.jpg" alt="用 fragment shader 畫的螺旋星系背景，左上整片留白">
+  <figcaption>純 WebGL 畫的，左上那整塊的亮度標準差是 0.0004，比任何一張 AI 生的圖都乾淨</figcaption>
+</figure>
+<p>寫了一支，<a href="demo/shader-bg.html">在這裡</a>（會動）。純 WebGL 的 fragment shader，沒有引用任何函式庫，照同一套配方畫：暗場留白佔多數、單一暖色發光核心當視覺中心、核心刻意放右下把左上留給標題。</p>
+<div class="tablewrap">
+<table>
+  <thead><tr><th></th><th>可放字區</th><th>白字對比</th><th>平坦度 std</th></tr></thead>
+  <tbody>
+    <tr><td>AI 生圖最好的一張</td><td>5 / 6</td><td>20.66</td><td>0.0023</td></tr>
+    <tr><td>程式畫的這一張</td><td><strong>6 / 6</strong></td><td>20.30</td><td><strong>0.0004</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<p>結論：<strong>做得出來，而且平坦度贏過所有 AI 生的圖。</strong>原因也很直接：留白區是程式算出來的純色，沒有任何雜訊。代價是它畫不出具象主體，只能做抽象的光與結構。這一段驗的是「程式畫的動態背景過得了同一把尺」，沒有驗 Three.js、Spline、Rive 那幾條個別的路。</p>
+
+<h4>四、換掉豆包，第 7 節那套修圖三步還成不成立</h4>
+<p>來源影片用的是豆包的內建擦除與擴圖。這裡改用 Codex CLI 的 image-edit 模式，先生一張刻意難看的隨手拍大樓（陰天、停滿車、三角錐、垃圾桶、電線橫過天空、路燈桿切過立面），再照原片順序跑三步。</p>
+<figure class="grid4">
+  <img loading="lazy" src="img/fix0-source.jpg" alt="原圖：陰天的大樓，畫面塞滿雜物">
+  <img loading="lazy" src="img/fix1-weather.jpg" alt="第一步換天氣">
+  <img loading="lazy" src="img/fix2-declutter.jpg" alt="第二步去干擾">
+  <img loading="lazy" src="img/fix3-focus.jpg" alt="第三步壓暗背景並留白">
+  <figcaption>由左而右、由上而下：原圖、換天氣、去干擾、壓暗背景並擴留白</figcaption>
+</figure>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>步驟</th><th>可放字區</th><th>白字對比</th><th>平坦度 std</th></tr></thead>
+  <tbody>
+    <tr><td>原圖</td><td>2 / 6</td><td>7.24</td><td>0.1101</td></tr>
+    <tr><td>換天氣</td><td>3 / 6</td><td>8.57</td><td>0.0986</td></tr>
+    <tr><td>去干擾</td><td>3 / 6</td><td>8.40</td><td>0.0970</td></tr>
+    <tr><td>壓暗並留白</td><td>4 / 6</td><td>8.72</td><td>0.0858</td></tr>
+  </tbody>
+</table>
+</div>
+<p>三個結論：</p>
+<ul>
+  <li><strong>整條流程有效，但幅度有限。</strong>2/6 修到 4/6、對比 7.24 拉到 8.72。跟第二輪那批 6/6、對比 20 上下比起來差一個量級。<strong>修圖是把不能用的救成勉強能用，不是把它變成好圖。</strong>手上真的有圖非用不可才走這條。</li>
+  <li><strong>換天氣那步效果最明顯</strong>（7.24 到 8.57），壓暗突出主體次之。這兩步換工具照樣複製得出來。</li>
+  <li><strong>去干擾與擴圖換了工具就不等價。</strong>去干擾沒做乾淨，右側那根電線桿三步都還在，數字甚至微幅倒退。擴留白那步更明顯：豆包的擴圖是把邊界往外推，這裡的模型是<strong>整張重畫</strong>，視角與比例都變了，天空變多是重新構圖的副作用。要真的擴圖，得找有 outpainting 的工具，不能靠提示詞叫模型「延伸畫面」。</li>
+</ul>
+
 <div class="box warn">
-  <p><strong>這組實驗的限制</strong>：每組只有一張對一張，n=1。生圖有隨機性，同一句提示詞重跑結果會不一樣，所以上面的數字是這六張的量測值，不是三種方法的統計結論。B 組那個「代價」我有把握是真的（風暴填滿畫面是結構性的），A 組跟 C 組要更多樣本才敢說死。</p>
-  <p>另外，可放字區的多寡跟畫面好不好看是兩件事。B2 那張風暴是六張裡最有力量的一張，量測分數卻最低。這支工具量的是「能不能放字」，不是「美不美」。</p>
+  <p><strong>這組實驗的限制</strong></p>
+  <ul>
+    <li>三組 A/B 每組只有一張對一張，n=1。隨機性那組驗過同一提示詞跑三次可用性穩定，但沒有驗「四段結構」與「尺度失衡」重跑三次會不會結論翻盤。</li>
+    <li>全部走同一個生圖模型。換成豆包、Midjourney、Seedream，提示詞的反應會不一樣。</li>
+    <li>可放字區的多寡跟畫面好不好看是兩件事。第一輪那張風暴是所有圖裡最有力量的一張，量測分數卻是最低的幾張之一。這支工具量的是「能不能放字」。</li>
+    <li>沒有驗動態背景。圖生影片與首尾幀循環那兩招，這一輪完全沒碰。</li>
+  </ul>
 </div>
 
 <h2 id="c11"><span class="num">11</span>開源網頁簡報生態盤點</h2>
@@ -416,27 +563,61 @@
 <p>2026 年 8 月 31 日拿同一份發包單實跑過兩種場合，只有場合與時間答得不一樣，結果差很多：會議室那份砍到八頁、<code>deck.css</code> 少了 74 行、QR 那支檔案直接刪掉；線上直播那份留了十六頁與 iframe。<strong>最值得記的一列是手機遙控：兩份都砍掉。</strong>線上直播是螢幕分享，人坐在電腦前，遙控器是給你離開筆電、站在實體舞台上用的。</p>
 
 <h4>跟 dashi-ppt-skill 的差別</h4>
-<p>兩套 clone 下來比過，解的不是同一個問題。</p>
+<div class="box">
+  <p><strong>先講一件查證出來的事</strong>：dashi-ppt-skill 的作者就是這兩支影片的作者。模板檔
+  <code>project/assets/template-swiss.html</code> 第 1943 行的作者區塊寫著
+  <code>@大师的AI小灶</code>，並連到同一個 GitHub 帳號與其抖音、小紅書、Bilibili。
+  所以這份研究拆的方法，跟這個七千顆星的 skill 出自同一人。</p>
+</div>
+<p>兩套都 clone 下來翻過原始碼，解的不是同一個問題。</p>
 <div class="tablewrap">
 <table>
   <thead><tr><th></th><th>slide-deck-skill（自製）</th><th>dashi-ppt-skill</th></tr></thead>
   <tbody>
     <tr><td>為誰設計</td><td>站著講的人</td><td>交出去給人看的報告</td></tr>
-    <tr><td>講者支援</td><td>雙螢幕主控台、講稿備註、節奏計時、手機遙控</td><td>沒有主控台</td></tr>
+    <tr><td>講者支援</td><td>雙螢幕主控台、講稿備註、節奏計時、手機遙控</td><td>都沒有，見下方查證</td></tr>
     <tr><td>視覺</td><td>一套 CSS，每場從被講的專案身上取色</td><td>12 套主題、1020 版式、8576 個可調控件</td></tr>
     <tr><td>改稿</td><td>改 HTML 原始碼</td><td>瀏覽器裡點文字就地改、滑桿換版式</td></tr>
-    <tr><td>出檔</td><td>16:9 PDF 與 A4 講義</td><td>PDF 與可編輯 PPTX</td></tr>
+    <tr><td>出檔</td><td>16:9 PDF 與 A4 講義</td><td>HTML 離線包、PDF、可編輯 PPTX</td></tr>
     <tr><td>驗收</td><td><code>deck-tools</code> 機器檢查</td><td>明講不做截圖審美精修</td></tr>
-    <tr><td>體積</td><td>1.5 MB</td><td>127 MB</td></tr>
+    <tr><td>體積</td><td>1.5 MB</td><td>127 MB（產物只帶其中一支主題 runtime，約 0.7 MB）</td></tr>
     <tr><td>授權</td><td>MIT</td><td>AGPL-3.0</td></tr>
   </tbody>
 </table>
 </div>
+
+<h4>查證一：dashi 有沒有講者主控台</h4>
+<p><strong>沒有。</strong>它畫面上那個「演示控制台」是編輯與匯出工具列，跟講者無關。它提供的是：播放預覽、
+匯出 HTML 離線包與 PDF 與 PPTX、重置、切語言、切明暗、左側縮圖目錄、預覽風格切換、
+十種換頁動畫、以及右側的可調控件面板。</p>
+<p>查法與結果：</p>
+<ul>
+  <li><code>speakernote</code>、<code>presenternote</code>、<code>演讲者备注</code>、<code>讲稿</code>：在模板、SKILL.md、README、版式清單裡<strong>零命中</strong>。搜到的「備註」全部是表格版式的欄位名，例如「最右側的備註說明列」。</li>
+  <li><code>window.open</code>、<code>BroadcastChannel</code>、<code>requestPresent</code>：在模板與 <code>scripts/</code> 裡<strong>零命中</strong>，所以沒有第二視窗或雙螢幕同步機制。</li>
+  <li>計時器：搜 <code>pace</code> 有命中，但逐一看過是字型名 <code>Space Grotesk</code> 的子字串，<strong>沒有計時功能</strong>。</li>
+</ul>
+<p>所以你的判斷是對的：<strong>它是網頁內直接改，但沒有講者的講稿模式。</strong></p>
+
+<h4>查證二：AGPL 的產物到底有沒有內嵌 runtime</h4>
+<p><strong>HTML 產物會，PDF 與 PPTX 不會。</strong></p>
+<ul>
+  <li><code>src/renderDeck.jsx</code> 第 152 行每次算繪都會產生 <code>assets/imported-theme-runtime.js</code>，
+      <code>scripts/validate-swiss-deck.mjs</code> 第 32 行還會檢查這個檔存在。所以<strong>任何一份 HTML 產物一定帶著它</strong>。</li>
+  <li>它是單主題自包含的 IIFE。<code>dist/theme-runtime/</code> 十二支合計 19 MB，
+      單支介於 0.70 MB 到 0.77 MB 之間，一份 deck 只會帶用到的那一支。
+      （順帶修正一個流傳的說法：那 19 MB 是十二套主題的總和，不是單份產物的體積。）</li>
+  <li>PDF 走 Playwright 截圖（<code>handlePdfExport</code> 呼叫 <code>exportScreenshotPdfFromUrl</code>），
+      PPTX 走另一條 <code>html-deck-to-pptx</code> 管線，兩者都是算繪結果，裡面沒有 JS。</li>
+</ul>
+<p><strong>可以照著做的結論</strong>：拿 dashi 做完，交 PDF 或 PPTX 給對方，不會碰到 AGPL 的散布條款。
+把匯出的 HTML 離線包放上公開網站或商用，就等於連同它的 runtime 一起散布，AGPL-3.0 的條款要自己看一眼
+（AGPL 的重點在第 13 條：透過網路提供服務也算散布，要提供對應原始碼）。上游 LICENSE 檔已確認是 AGPL-3.0，
+本機安裝的 skill 目錄裡沒有帶 LICENSE 檔。</p>
+<p class="meta">這一段只是把原始碼翻出來看到什麼就寫什麼，沒有法律效力。真的要商用，條款請自己讀或問律師。</p>
+
 <p>兩個都留著。要交報告、要 PPTX 檔、對方要自己改字，dashi 贏；要上台講、要備註計時遙控、要當場內嵌真站台，自製這套贏。<strong>規格是自己的資產，乙方可以換。</strong></p>
 
-<div class="box warn">
-  <p><strong>還沒驗證的一點</strong>：dashi 是 AGPL-3.0，自己做自己用沒事，但產物如果內嵌了它的 runtime 又放上公開網站或商用，條款要自己看一眼。<strong>我沒有實際檢查過它的產物到底有沒有把那包 runtime 打進去</strong>，所以這句只當提醒，不當結論。</p>
-</div>
+
 
 <p class="meta">這份研究筆記本身沒有用 slide-deck-skill，因為筆記是一頁式網頁而非投影片。第 10 節那份對照實驗投影片是為了展示背景圖另外手寫的最小播放器。</p>
 
@@ -468,16 +649,40 @@
 </ul>
 </div>
 
-<h2 id="c13"><span class="num">13</span>我還沒驗證的部分</h2>
-<div class="box warn">
+<h2 id="c13"><span class="num">13</span>驗過的與還沒驗的</h2>
+<p>這一節是給要拿這份東西上台的人看的：哪幾句話有證據撐、哪幾句還只是轉述。</p>
+
+<h3>已經驗過的</h3>
+<div class="tablewrap">
+<table>
+  <thead><tr><th>宣稱</th><th>怎麼驗的</th><th>結果</th></tr></thead>
+  <tbody>
+    <tr><td>提示詞四段結構有用</td><td>同主體 A/B 各一張，量可放字區</td><td>1/6 到 3/6，成立</td></tr>
+    <tr><td>尺度失衡讓畫面更有張力</td><td>同上</td><td>張力成立，但可放字區從 4/6 掉到 3/6，<strong>有代價</strong></td></tr>
+    <tr><td>加一個發光元素就有視覺中心</td><td>同上</td><td>過關區不變、對比從 10.53 到 13.61，<strong>沒有代價</strong></td></tr>
+    <tr><td>第 4 集封面的真正配方</td><td>逐幀讀出原片畫面上打出來的完整提示詞</td><td>暗場留白、主體比環境亮、前景遠景分寫，全部落實在第二輪</td></tr>
+    <tr><td>暗場留白比亮天空好用</td><td>兩輪十張一起量</td><td>對比 5.25 到 13.61 對上 14.39 到 20.66，<strong>差一個量級</strong></td></tr>
+    <tr><td>生圖有隨機性，方法會不會失效</td><td>同一提示詞跑三次</td><td>構圖每次不同，可放字區都是 6/6，<strong>可用性穩定</strong></td></tr>
+    <tr><td>配色可以隨便換</td><td>只換發光顏色跑三色</td><td>四種顏色全部 6/6、對比 20.49 到 20.97，<strong>結構不動時成立</strong></td></tr>
+    <tr><td>用程式也能畫出能放字的背景</td><td>自己寫一支純 WebGL shader 再量</td><td>6/6、對比 20.30、平坦度 0.0004，<strong>比所有 AI 生的圖乾淨</strong></td></tr>
+    <tr><td>修丑圖三步換掉豆包還成立嗎</td><td>生一張爛圖再跑三步</td><td>2/6 修到 4/6。換天氣與壓暗可複製；<strong>去干擾沒做乾淨、擴圖變成整張重畫</strong></td></tr>
+    <tr><td>dashi-ppt-skill 有沒有講者主控台</td><td>翻原始碼逐項搜關鍵字</td><td><strong>沒有</strong>。詳見第 11 節的查證一</td></tr>
+    <tr><td>dashi 的產物會不會內嵌 AGPL runtime</td><td>翻算繪與匯出的原始碼</td><td><strong>HTML 會、PDF 與 PPTX 不會</strong>。詳見查證二</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>還沒驗的</h3>
 <ul>
-  <li>這份筆記整理自影片與文件的內容，<strong>我沒有實際跑過任何一組提示詞</strong>。表格裡的提示詞塊是照著來源整理的，不是我的實測結果。</li>
-  <li>來源示範用的生圖工具是豆包，擦除與擴圖是它的內建功能。換成其他工具時，這兩個功能的名稱與效果都可能不同。</li>
-  <li>生圖有隨機性，同一組提示詞每次結果不同，這一點來源文件本身也寫了。</li>
-  <li>「配色可以隨便換」這個說法我沒有反例也沒有正例，只能當成待驗證的主張。</li>
-  <li>第 9 節那條 HTML 路線我只讀過文件，沒有動手做過一份。</li>
+  <li><strong>動態背景整條線完全沒碰。</strong>「以 XX 為中心，旋轉運鏡」這句萬用公式、首尾幀設成同一張做無限循環、以及影片放進簡報要設自動播放，這三件都只是照原片與文件整理，一次都沒實跑過。這是目前最大的缺口，因為動態背景正是拉開差距最明顯的那一步。</li>
+  <li><strong>換生圖工具的反應沒驗。</strong>全部十九張圖都走同一個模型。來源示範用的是豆包，換成它、Midjourney 或 Seedream，同一組提示詞的反應會不一樣。</li>
+  <li><strong>四段結構與尺度失衡沒有重複樣本。</strong>只有隨機性那一組驗過重跑三次。這兩個結論各只有一張對一張。</li>
+  <li><strong>第 11 節那 36 個 repo，只有 dashi 與自製這套實際翻過原始碼。</strong>其餘 34 個的描述來自 README 與 GitHub 的中繼資料，沒有逐一跑過。</li>
+  <li><strong>第 9 節其餘的路只驗了一條。</strong>自己寫的是 fragment shader，Spline、Rive、Matter.js、Mapbox、ECharts 那幾條都沒實作。</li>
 </ul>
-<p>下一步該做的是挑三個真實的簡報主題，各跑一輪四段提示詞，把出圖貼在這頁下面做前後對照。</p>
+
+<div class="box">
+  <p><strong>下一步</strong>：把動態背景補起來。挑第二輪那四張各跑一次圖生影片，用「以 XX 為中心，旋轉運鏡」與首尾幀同圖兩種做法，然後把成品嵌進投影片實測自動播放。這是唯一還沒有證據、卻在台上一定會被問到的一段。</p>
 </div>
 
 <h2 id="c14"><span class="num">14</span>素材與出處</h2>

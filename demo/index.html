@@ -32,6 +32,9 @@
   .cover{position:absolute;inset:0;display:grid;place-content:center;gap:14px;
          text-align:center;padding:6%;background:linear-gradient(160deg,#141922,#0b0d10)}
   .cover h2{font-size:clamp(20px,4cqw,54px);margin:0}
+  .cover.note{place-content:center;text-align:start;padding:8% 10%}
+  .cover.note h2{font-size:clamp(18px,3.2cqw,44px);margin-bottom:.5em}
+  .cover.note p{font-size:clamp(10px,1.5cqw,19px);line-height:1.9;max-width:46em}
   .cover p{color:var(--dim);margin:0;font-size:clamp(11px,1.6cqw,20px)}
   table.res{border-collapse:collapse;font-size:clamp(9px,1.25cqw,16px);margin:0 auto}
   table.res th,table.res td{padding:.4em .9em;border-bottom:1px solid var(--line);text-align:start}
@@ -56,7 +59,7 @@
 <div id="stage"><div class="slide" id="slide"></div></div>
 
 <div id="bar">
-  <span><b id="pos">1 / 8</b></span>
+  <span><b id="pos">1 / 13</b></span>
   <span><kbd>←</kbd><kbd>→</kbd> 翻頁</span>
   <span><button id="btnZ">顯示文字區判定</button> <kbd>G</kbd></span>
   <span><button id="btnT">隱藏標題</button> <kbd>T</kbd></span>
@@ -68,7 +71,10 @@ const TITLE = { h: "揚帆起航　攜手並進", p: "2026 年度總結報告" }
 
 const SLIDES = [
   { type: "cover", h: "簡報背景對照實驗",
-    p: "同一句標題，壓在六張自己生成的背景上。左右鍵翻頁，按 G 看機械量測的文字區判定。" },
+    p: "同一句標題，壓在十張自己生成的背景上。前六張是抓錯視覺語言的第一輪，後四張是照原片配方重做的。左右鍵翻頁，按 G 看機械量測的文字區判定。" },
+
+  { type: "note", h: "第一輪：三組 A/B 對照",
+    p: "每組只動一個變數。這一輪的視覺語言是錯的，但對照關係仍然成立，所以留著。" },
 
   { img: "assets/a1-naive.jpg", key: "a1-naive", cap: "A1　一句話提示詞（對照組）" },
   { img: "assets/a2-four-part.jpg", key: "a2-four-part", cap: "A2　四段結構提示詞" },
@@ -78,6 +84,17 @@ const SLIDES = [
 
   { img: "assets/c1-flat-light.jpg", key: "c1-flat-light", cap: "C1　平光（對照組）" },
   { img: "assets/c2-glow.jpg", key: "c2-glow", cap: "C2　加一道流金色發光脈絡" },
+
+  { type: "note", h: "第一輪抓錯了視覺語言",
+    p: "上面六張都是白天的實景照，因為我拿第 3 集那張「國家地理攝影風格」的提示詞塊，去做第 4 集的技巧。"
+       + "第 4 集整支影片的封面沒有一張是紀實攝影，全部是深色超現實概念藝術。原片畫面上寫得很清楚："
+       + "「背景為深藍至黑色留白，宇航員及其周圍被暖金色主光源照亮，輪廓清晰、對比強烈，亮度明顯高於環境」。"
+       + "留白是暗場，主體要比環境亮。下面四張是照原片配方重做的。" },
+
+  { img: "assets/r2-galaxy-sailboat.jpg", key: "r2-galaxy-sailboat", cap: "重做　帆船在銀河中心" },
+  { img: "assets/r2-glowing-horse.jpg", key: "r2-glowing-horse", cap: "重做　沙丘上發光的馬" },
+  { img: "assets/r2-book-astronaut.jpg", key: "r2-book-astronaut", cap: "重做　書頁上加班的太空人" },
+  { img: "assets/r2-giant-earth.jpg", key: "r2-giant-earth", cap: "重做　壓迫到地面的巨型星球" },
 
   { type: "result", h: "量測結果", p: "六個候選文字區裡，有幾個同時通過平坦度與對比度" },
 ];
@@ -119,21 +136,37 @@ function zoneHTML(key) {
 }
 
 function resultTable() {
-  const pairs = [
+  const r1 = [
     ["A　提示詞四段結構", "a1-naive", "一句話", "a2-four-part", "四段"],
     ["B　尺度失衡", "b1-normal-scale", "正常尺度", "b2-scale-break", "失衡"],
     ["C　光", "c1-flat-light", "平光", "c2-glow", "加光"],
   ];
   let rows = "";
-  for (const [label, k1, n1, k2, n2] of pairs) {
+  for (const [label, k1, n1, k2, n2] of r1) {
     const a = byKey(k1), b = byKey(k2);
     const av = a ? a.pass_count : "—", bv = b ? b.pass_count : "—";
     const up = (typeof av === "number" && typeof bv === "number" && bv > av) ? " up" : "";
     rows += `<tr><td>${label}</td><td>${n1}</td><td class="num">${av} / 6</td>`
           + `<td>${n2}</td><td class="num${up}">${bv} / 6</td></tr>`;
   }
-  return `<table class="res"><thead><tr><th>對照組</th><th>前</th><th>過關區</th>`
-       + `<th>後</th><th>過關區</th></tr></thead><tbody>${rows}</tbody></table>`;
+  const t1 = `<table class="res"><thead><tr><th>第一輪對照組</th><th>前</th><th>過關區</th>`
+           + `<th>後</th><th>過關區</th></tr></thead><tbody>${rows}</tbody></table>`;
+
+  const all = ["a1-naive", "a2-four-part", "b1-normal-scale", "b2-scale-break",
+               "c1-flat-light", "c2-glow"].map(byKey).filter(Boolean);
+  const r2 = ["r2-galaxy-sailboat", "r2-glowing-horse", "r2-book-astronaut",
+              "r2-giant-earth"].map(byKey).filter(Boolean);
+  const span = xs => xs.length
+    ? Math.min(...xs).toFixed(2) + " 到 " + Math.max(...xs).toFixed(2) : "—";
+  const spanStd = xs => xs.length
+    ? Math.min(...xs).toFixed(4) + " 到 " + Math.max(...xs).toFixed(4) : "—";
+  const t2 = `<table class="res" style="margin-top:1.4em"><thead><tr><th>兩輪比較</th>`
+    + `<th>代表區對比度</th><th>代表區平坦度 std</th></tr></thead><tbody>`
+    + `<tr><td>第一輪　攝影風</td><td class="num">${span(all.map(r => r.best.contrast))}</td>`
+    + `<td class="num">${spanStd(all.map(r => r.best.std))}</td></tr>`
+    + `<tr><td>第二輪　深色超現實</td><td class="num up">${span(r2.map(r => r.best.contrast))}</td>`
+    + `<td class="num up">${spanStd(r2.map(r => r.best.std))}</td></tr></tbody></table>`;
+  return t1 + t2;
 }
 
 // 標題擺哪、用什麼字色，全部照 verify.py 挑出來的代表區，不手動調
@@ -155,6 +188,8 @@ function render() {
   const el = document.getElementById("slide");
   if (s.type === "cover") {
     el.innerHTML = `<div class="cover"><h2>${s.h}</h2><p>${s.p}</p></div>`;
+  } else if (s.type === "note") {
+    el.innerHTML = `<div class="cover note"><h2>${s.h}</h2><p>${s.p}</p></div>`;
   } else if (s.type === "result") {
     el.innerHTML = `<div class="cover"><h2>${s.h}</h2><p>${s.p}</p>${resultTable()}</div>`;
   } else {

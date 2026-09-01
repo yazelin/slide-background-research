@@ -400,5 +400,1010 @@
         "ok": true
       }
     ]
+  },
+  {
+    "file": "r2-16x9/r2-book-astronaut.png",
+    "size": [
+      1672,
+      940
+    ],
+    "pass": true,
+    "pass_count": 5,
+    "best": {
+      "zone": "左上",
+      "mean": 0.0008,
+      "std": 0.0023,
+      "ink": "白字",
+      "contrast": 20.66,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.0008,
+        "std": 0.0023,
+        "ink": "白字",
+        "contrast": 20.66,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.0022,
+        "std": 0.0073,
+        "ink": "白字",
+        "contrast": 20.12,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.0426,
+        "std": 0.086,
+        "ink": "白字",
+        "contrast": 11.34,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.0112,
+        "std": 0.0208,
+        "ink": "白字",
+        "contrast": 17.16,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0745,
+        "std": 0.1031,
+        "ink": "白字",
+        "contrast": 8.44,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0993,
+        "std": 0.1241,
+        "ink": "白字",
+        "contrast": 7.03,
+        "ok": false
+      }
+    ]
+  },
+  {
+    "file": "r2-16x9/r2-galaxy-sailboat.png",
+    "size": [
+      1410,
+      793
+    ],
+    "pass": true,
+    "pass_count": 6,
+    "best": {
+      "zone": "左上",
+      "mean": 0.023,
+      "std": 0.057,
+      "ink": "白字",
+      "contrast": 14.39,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.023,
+        "std": 0.057,
+        "ink": "白字",
+        "contrast": 14.39,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.0731,
+        "std": 0.1072,
+        "ink": "白字",
+        "contrast": 8.53,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.0525,
+        "std": 0.0949,
+        "ink": "白字",
+        "contrast": 10.25,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.0327,
+        "std": 0.0646,
+        "ink": "白字",
+        "contrast": 12.69,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0565,
+        "std": 0.086,
+        "ink": "白字",
+        "contrast": 9.86,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0292,
+        "std": 0.0622,
+        "ink": "白字",
+        "contrast": 13.26,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "r2-16x9/r2-giant-earth.png",
+    "size": [
+      1536,
+      864
+    ],
+    "pass": true,
+    "pass_count": 4,
+    "best": {
+      "zone": "左上",
+      "mean": 0.0078,
+      "std": 0.0203,
+      "ink": "白字",
+      "contrast": 18.15,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.0078,
+        "std": 0.0203,
+        "ink": "白字",
+        "contrast": 18.15,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.1329,
+        "std": 0.2097,
+        "ink": "白字",
+        "contrast": 5.74,
+        "ok": false
+      },
+      {
+        "zone": "右上",
+        "mean": 0.1457,
+        "std": 0.1976,
+        "ink": "白字",
+        "contrast": 5.37,
+        "ok": false
+      },
+      {
+        "zone": "左下",
+        "mean": 0.0945,
+        "std": 0.1068,
+        "ink": "白字",
+        "contrast": 7.26,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.1149,
+        "std": 0.1198,
+        "ink": "白字",
+        "contrast": 6.37,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0637,
+        "std": 0.0945,
+        "ink": "白字",
+        "contrast": 9.23,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "r2-16x9/r2-glowing-horse.png",
+    "size": [
+      1458,
+      820
+    ],
+    "pass": true,
+    "pass_count": 6,
+    "best": {
+      "zone": "左上",
+      "mean": 0.0012,
+      "std": 0.0003,
+      "ink": "白字",
+      "contrast": 20.49,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.0012,
+        "std": 0.0003,
+        "ink": "白字",
+        "contrast": 20.49,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.0013,
+        "std": 0.0004,
+        "ink": "白字",
+        "contrast": 20.46,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.0015,
+        "std": 0.0004,
+        "ink": "白字",
+        "contrast": 20.39,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.0326,
+        "std": 0.095,
+        "ink": "白字",
+        "contrast": 12.71,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0133,
+        "std": 0.0436,
+        "ink": "白字",
+        "contrast": 16.58,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.004,
+        "std": 0.0016,
+        "ink": "白字",
+        "contrast": 19.44,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "r3-16x9/r3-colour-green.png",
+    "size": [
+      1536,
+      864
+    ],
+    "pass": true,
+    "pass_count": 6,
+    "best": {
+      "zone": "左上",
+      "mean": 0.0006,
+      "std": 0.0002,
+      "ink": "白字",
+      "contrast": 20.75,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.0006,
+        "std": 0.0002,
+        "ink": "白字",
+        "contrast": 20.75,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.0006,
+        "std": 0.0002,
+        "ink": "白字",
+        "contrast": 20.74,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.0006,
+        "std": 0.0002,
+        "ink": "白字",
+        "contrast": 20.74,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.0018,
+        "std": 0.0018,
+        "ink": "白字",
+        "contrast": 20.28,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0019,
+        "std": 0.0011,
+        "ink": "白字",
+        "contrast": 20.21,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0014,
+        "std": 0.0008,
+        "ink": "白字",
+        "contrast": 20.41,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "r3-16x9/r3-colour-magenta.png",
+    "size": [
+      1454,
+      818
+    ],
+    "pass": true,
+    "pass_count": 6,
+    "best": {
+      "zone": "左上",
+      "mean": 0.0004,
+      "std": 0.0001,
+      "ink": "白字",
+      "contrast": 20.83,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.0004,
+        "std": 0.0001,
+        "ink": "白字",
+        "contrast": 20.83,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.0004,
+        "std": 0.0001,
+        "ink": "白字",
+        "contrast": 20.81,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.0005,
+        "std": 0.0001,
+        "ink": "白字",
+        "contrast": 20.81,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.0016,
+        "std": 0.0035,
+        "ink": "白字",
+        "contrast": 20.36,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0065,
+        "std": 0.0299,
+        "ink": "白字",
+        "contrast": 18.58,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0026,
+        "std": 0.0111,
+        "ink": "白字",
+        "contrast": 19.95,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "r3-16x9/r3-colour-teal.png",
+    "size": [
+      1536,
+      864
+    ],
+    "pass": true,
+    "pass_count": 6,
+    "best": {
+      "zone": "左上",
+      "mean": 0.0001,
+      "std": 0.0001,
+      "ink": "白字",
+      "contrast": 20.97,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.0001,
+        "std": 0.0001,
+        "ink": "白字",
+        "contrast": 20.97,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.0001,
+        "std": 0.0001,
+        "ink": "白字",
+        "contrast": 20.97,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.0001,
+        "std": 0.0001,
+        "ink": "白字",
+        "contrast": 20.97,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.0124,
+        "std": 0.0569,
+        "ink": "白字",
+        "contrast": 16.82,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0154,
+        "std": 0.0569,
+        "ink": "白字",
+        "contrast": 16.06,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0051,
+        "std": 0.0064,
+        "ink": "白字",
+        "contrast": 19.04,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "r3-16x9/r3-repeat-1.png",
+    "size": [
+      1410,
+      793
+    ],
+    "pass": true,
+    "pass_count": 6,
+    "best": {
+      "zone": "右上",
+      "mean": 0.0025,
+      "std": 0.0005,
+      "ink": "白字",
+      "contrast": 20.0,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.003,
+        "std": 0.0004,
+        "ink": "白字",
+        "contrast": 19.8,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.0031,
+        "std": 0.0004,
+        "ink": "白字",
+        "contrast": 19.78,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.0025,
+        "std": 0.0005,
+        "ink": "白字",
+        "contrast": 20.0,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.0174,
+        "std": 0.0501,
+        "ink": "白字",
+        "contrast": 15.59,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0109,
+        "std": 0.0265,
+        "ink": "白字",
+        "contrast": 17.24,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0047,
+        "std": 0.0037,
+        "ink": "白字",
+        "contrast": 19.19,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "r3-16x9/r3-repeat-2.png",
+    "size": [
+      1442,
+      811
+    ],
+    "pass": true,
+    "pass_count": 6,
+    "best": {
+      "zone": "左上",
+      "mean": 0.0006,
+      "std": 0.0002,
+      "ink": "白字",
+      "contrast": 20.76,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.0006,
+        "std": 0.0002,
+        "ink": "白字",
+        "contrast": 20.76,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.0007,
+        "std": 0.0002,
+        "ink": "白字",
+        "contrast": 20.69,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.0007,
+        "std": 0.0002,
+        "ink": "白字",
+        "contrast": 20.7,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.0093,
+        "std": 0.0412,
+        "ink": "白字",
+        "contrast": 17.72,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0092,
+        "std": 0.0405,
+        "ink": "白字",
+        "contrast": 17.75,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0021,
+        "std": 0.0019,
+        "ink": "白字",
+        "contrast": 20.17,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "r3-16x9/r3-repeat-3.png",
+    "size": [
+      1451,
+      816
+    ],
+    "pass": true,
+    "pass_count": 6,
+    "best": {
+      "zone": "右上",
+      "mean": 0.0006,
+      "std": 0.0002,
+      "ink": "白字",
+      "contrast": 20.73,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.0007,
+        "std": 0.0002,
+        "ink": "白字",
+        "contrast": 20.69,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.0007,
+        "std": 0.0002,
+        "ink": "白字",
+        "contrast": 20.69,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.0006,
+        "std": 0.0002,
+        "ink": "白字",
+        "contrast": 20.73,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.0097,
+        "std": 0.041,
+        "ink": "白字",
+        "contrast": 17.59,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0059,
+        "std": 0.029,
+        "ink": "白字",
+        "contrast": 18.8,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0013,
+        "std": 0.0015,
+        "ink": "白字",
+        "contrast": 20.46,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "fix-16x9/fix0-source.png",
+    "size": [
+      1672,
+      941
+    ],
+    "pass": true,
+    "pass_count": 2,
+    "best": {
+      "zone": "右下",
+      "mean": 0.095,
+      "std": 0.1101,
+      "ink": "白字",
+      "contrast": 7.24,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.4961,
+        "std": 0.2154,
+        "ink": "黑字",
+        "contrast": 10.92,
+        "ok": false
+      },
+      {
+        "zone": "中上",
+        "mean": 0.3944,
+        "std": 0.2683,
+        "ink": "黑字",
+        "contrast": 8.89,
+        "ok": false
+      },
+      {
+        "zone": "右上",
+        "mean": 0.4105,
+        "std": 0.2575,
+        "ink": "黑字",
+        "contrast": 9.21,
+        "ok": false
+      },
+      {
+        "zone": "左下",
+        "mean": 0.1242,
+        "std": 0.1209,
+        "ink": "白字",
+        "contrast": 6.03,
+        "ok": false
+      },
+      {
+        "zone": "中下",
+        "mean": 0.099,
+        "std": 0.1016,
+        "ink": "白字",
+        "contrast": 7.05,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.095,
+        "std": 0.1101,
+        "ink": "白字",
+        "contrast": 7.24,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "fix-16x9/fix1-weather.png",
+    "size": [
+      1672,
+      941
+    ],
+    "pass": true,
+    "pass_count": 3,
+    "best": {
+      "zone": "右下",
+      "mean": 0.0726,
+      "std": 0.0986,
+      "ink": "白字",
+      "contrast": 8.57,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.3361,
+        "std": 0.1346,
+        "ink": "黑字",
+        "contrast": 7.72,
+        "ok": false
+      },
+      {
+        "zone": "中上",
+        "mean": 0.2523,
+        "std": 0.1477,
+        "ink": "黑字",
+        "contrast": 6.05,
+        "ok": false
+      },
+      {
+        "zone": "右上",
+        "mean": 0.2715,
+        "std": 0.1519,
+        "ink": "黑字",
+        "contrast": 6.43,
+        "ok": false
+      },
+      {
+        "zone": "左下",
+        "mean": 0.1055,
+        "std": 0.1184,
+        "ink": "白字",
+        "contrast": 6.75,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0773,
+        "std": 0.0857,
+        "ink": "白字",
+        "contrast": 8.25,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0726,
+        "std": 0.0986,
+        "ink": "白字",
+        "contrast": 8.57,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "fix-16x9/fix2-declutter.png",
+    "size": [
+      1672,
+      941
+    ],
+    "pass": true,
+    "pass_count": 3,
+    "best": {
+      "zone": "右下",
+      "mean": 0.0751,
+      "std": 0.097,
+      "ink": "白字",
+      "contrast": 8.4,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.3313,
+        "std": 0.123,
+        "ink": "黑字",
+        "contrast": 7.63,
+        "ok": false
+      },
+      {
+        "zone": "中上",
+        "mean": 0.2535,
+        "std": 0.1425,
+        "ink": "黑字",
+        "contrast": 6.07,
+        "ok": false
+      },
+      {
+        "zone": "右上",
+        "mean": 0.2675,
+        "std": 0.1432,
+        "ink": "黑字",
+        "contrast": 6.35,
+        "ok": false
+      },
+      {
+        "zone": "左下",
+        "mean": 0.0992,
+        "std": 0.1079,
+        "ink": "白字",
+        "contrast": 7.04,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0803,
+        "std": 0.0833,
+        "ink": "白字",
+        "contrast": 8.06,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0751,
+        "std": 0.097,
+        "ink": "白字",
+        "contrast": 8.4,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "fix-16x9/fix3-focus.png",
+    "size": [
+      1672,
+      941
+    ],
+    "pass": true,
+    "pass_count": 4,
+    "best": {
+      "zone": "中下",
+      "mean": 0.0705,
+      "std": 0.0858,
+      "ink": "白字",
+      "contrast": 8.72,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.1616,
+        "std": 0.0396,
+        "ink": "白字",
+        "contrast": 4.96,
+        "ok": false
+      },
+      {
+        "zone": "中上",
+        "mean": 0.1599,
+        "std": 0.0419,
+        "ink": "白字",
+        "contrast": 5.0,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.1337,
+        "std": 0.0396,
+        "ink": "白字",
+        "contrast": 5.71,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.1306,
+        "std": 0.1414,
+        "ink": "白字",
+        "contrast": 5.81,
+        "ok": false
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0705,
+        "std": 0.0858,
+        "ink": "白字",
+        "contrast": 8.72,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0797,
+        "std": 0.1003,
+        "ink": "白字",
+        "contrast": 8.1,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "shader-bg.png",
+    "size": [
+      1600,
+      900
+    ],
+    "pass": true,
+    "pass_count": 6,
+    "best": {
+      "zone": "左上",
+      "mean": 0.0017,
+      "std": 0.0004,
+      "ink": "白字",
+      "contrast": 20.3,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.0017,
+        "std": 0.0004,
+        "ink": "白字",
+        "contrast": 20.3,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.0035,
+        "std": 0.0036,
+        "ink": "白字",
+        "contrast": 19.64,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.006,
+        "std": 0.0064,
+        "ink": "白字",
+        "contrast": 18.76,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.0041,
+        "std": 0.0068,
+        "ink": "白字",
+        "contrast": 19.4,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0282,
+        "std": 0.0493,
+        "ink": "白字",
+        "contrast": 13.42,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0866,
+        "std": 0.1186,
+        "ink": "白字",
+        "contrast": 7.69,
+        "ok": true
+      }
+    ]
   }
 ]
