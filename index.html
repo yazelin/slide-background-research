@@ -435,18 +435,19 @@
   <li><strong>那支 API 只吃文字，不吃圖。</strong><code>VideoRequest</code> 只有 <code>prompt</code> 與 <code>timeout</code> 兩個欄位，<code>generate_video()</code> 也沒有把參考檔傳下去。所以<strong>現成的路是文生影片，不是圖生影片</strong>，做不到「拿第二輪那張圖去動」。</li>
   <li><strong>底層其實接得上。</strong>同一支 <code>_generate_media()</code> 已經有 <code>ref_path</code> 參數而且會把檔案掛上去，生音樂就是走這條。要補圖生影片，是在 <code>generate_video()</code> 把 <code>ref_path</code> 傳下去、在 <code>VideoRequest</code> 加兩個欄位，照生音樂那段抄。這是動到那台機器上的服務，還沒動。</li>
 </ul>
-<p>文生影片實跑了三次，全部逾時：728 秒、1448 秒、189 秒。<strong>所以 Veo 這條目前拿不到成品，而且原因不是它慢。</strong></p>
+<p>文生影片實跑了四次，全部逾時：728、1448、189、1448 秒。<strong>所以 Veo 這條目前拿不到成品，而且原因不是它慢。</strong></p>
 <div class="box warn">
-  <p><strong>查出來的原因</strong>（有 log 與診斷截圖為證）</p>
+  <p><strong>查到哪裡為止</strong>（有 log、診斷截圖與四次實跑為證）</p>
   <ul>
     <li>服務的 log 明確寫著「已從側欄進入影片頁，輸入框提示：<code>描述影片構想</code>」，接著寫「prompt 已送出，開始等待」。<strong>進得了影片模式，也找得到輸入框。</strong></li>
-    <li>但等滿之後，頁面上 <code>document.querySelectorAll('video, source, [class*=media]')</code> 回傳<strong>空陣列</strong>，三次都一樣。</li>
-    <li>逾時當下的截圖顯示：畫面停在「建立影片」的範本牆，輸入框是灰色的 placeholder，<strong>對話串裡沒有任何使用者訊息</strong>，也沒有送出鈕。</li>
+    <li>但等滿之後，頁面上 <code>document.querySelectorAll('video, source, [class*=media]')</code> 回傳<strong>空陣列</strong>，四次都一樣。</li>
+    <li>逾時當下的截圖每次都相同：畫面停在「建立影片」的範本牆，輸入框是灰色的 placeholder，<strong>對話串裡沒有任何使用者訊息</strong>，網址每次都是一個新的空對話。</li>
     <li>換成 37 個字元的最短提示詞，結果一模一樣，<strong>排除提示詞太長</strong>。</li>
   </ul>
-  <p>所以問題出在打字與送出這一步。Gemini 的「建立影片」介面改版了，現在的輸入列上有「影片」與「橫向 (16:9)」這些新的控制項，服務按舊流程打完字按 Enter，字消失了但訊息沒有送進對話串。</p>
-  <p><strong>而且服務原本就有防呆，只是判準錯了。</strong>它檢查的是「字還留在輸入框裡嗎」，留著就改點送出鈕。新介面上字並沒有留著，所以防呆不會觸發，程式就當作送出成功，然後空等到逾時。正確的判準應該是「對話串裡有沒有出現使用者訊息」。</p>
-  <p class="meta">這是動到區網那台機器上的服務，還沒改。對照組：8 月 31 日同一支的診斷截圖裡有「複製提示詞、編輯、重做」那排按鈕，那是一般對話回覆的樣子，代表那次是送出了但走成文字回答。兩次的壞法不同。</p>
+  <p><strong>中途發現一份沒生效的修正。</strong>那台機器上有 268 行未提交的改動，是 8 月 31 日 16:28 寫好的，但服務最後一次重啟是 16:18，比它早十分鐘，所以那份修正從來沒有跑過。它修的是兩個真的 bug：一是檢查「字還在輸入框嗎」時用 <code>document.querySelector</code> 讀到 Quill 的隱藏貼上緩衝區（永遠是空的），二是送出鈕的 <code>aria-label</code> 實際上是「傳送訊息」，舊寫法在中文介面一個都配不上。已經把它 commit、開 PR、重啟服務讓它生效。</p>
+  <p><strong>但影片還是失敗，第四次。</strong>畫面與前三次完全相同。所以那兩個 bug 是真的，修得也對，<strong>卻不是這條路壞掉的原因</strong>。</p>
+  <p>目前指向的是那個頁面本身：「建立影片」的落地頁上寫著「試用範本或<strong>在對話中</strong>描述想生成的影片」，而服務是在那個範本牆的輸入框打字。字打進去了、按 Enter 之後消失了，但訊息沒有進入對話串。合理的推測是<strong>那個輸入框不是真正的送出入口</strong>，要嘛先選一個範本，要嘛得回到一般對話裡描述。這一步需要開真瀏覽器互動看一次才能確定，還沒做。</p>
+  <p class="meta">對照組：8 月 31 日同一支的診斷截圖裡有「複製提示詞、編輯、重做」那排按鈕，那是一般對話回覆的樣子，代表那次是送出了但走成文字回答。跟現在這四次的壞法不同。</p>
 </div>
 
 <h5>另一條不用等的路：從靜圖做無縫循環</h5>
@@ -716,7 +717,7 @@ readyState: 4      duration: 12      解析度 1600x900
     <tr><td>dashi-ppt-skill 有沒有講者主控台</td><td>翻原始碼逐項搜關鍵字</td><td><strong>沒有</strong>。詳見第 11 節的查證一</td></tr>
     <tr><td>從靜圖做無縫循環的運鏡</td><td>ffmpeg 把運鏡寫成 1-cos 形式，再抽首尾幀比對</td><td>平均色差 0.46 與 2.54 / 255，<strong>由結構保證接得上</strong></td></tr>
     <tr><td>背景影片能不能在投影片裡自動播放</td><td>嵌進投影片，讀瀏覽器回報的播放狀態</td><td><strong>會</strong>，前提是 <code>muted</code>；播放時間確實在前進</td></tr>
-    <tr><td>自架的 Veo 能不能產出背景影片</td><td>讀 API 與原始碼、實跑三次、拉 log 與診斷截圖</td><td><strong>不能</strong>。API 不吃圖，而且文生影片也壞了：提示詞根本沒送進對話串，服務的防呆判準錯了</td></tr>
+    <tr><td>自架的 Veo 能不能產出背景影片</td><td>讀 API 與原始碼、實跑四次、拉 log 與診斷截圖、修完重啟再跑</td><td><strong>不能</strong>。API 不吃圖，而且文生影片四次全逾時：提示詞沒進對話串。修掉兩個真的 bug 之後仍然失敗，卡點還沒定位</td></tr>
     <tr><td>dashi 的產物會不會內嵌 AGPL runtime</td><td>翻算繪與匯出的原始碼</td><td><strong>HTML 會、PDF 與 PPTX 不會</strong>。詳見查證二</td></tr>
   </tbody>
 </table>
@@ -732,7 +733,7 @@ readyState: 4      duration: 12      解析度 1600x900
 </ul>
 
 <div class="box">
-  <p><strong>下一步有兩件，都要動到區網那台的服務</strong>：一是把送出的防呆判準從「字還在不在輸入框」改成「對話串有沒有出現使用者訊息」，這是三次逾時的直接原因；二是把 <code>ref_path</code> 從 <code>_generate_media()</code> 接到 <code>generate_video()</code>，才有真正的圖生影片。在那之前，台上能給的答案是：<strong>推近與平移用 ffmpeg 做，無縫循環比 AI 可靠；真正的環繞運鏡目前做不到。</strong></p>
+  <p><strong>下一步</strong>：先開真瀏覽器在「建立影片」那頁手動打一次字，看按 Enter 之後到底發生什麼，確定那個輸入框是不是真的送出入口。定位到之後才談要不要把 <code>ref_path</code> 接進 <code>generate_video()</code> 做圖生影片。在那之前，台上能給的答案是：<strong>推近與平移用 ffmpeg 做，無縫循環比 AI 可靠；真正的環繞運鏡目前做不到。</strong></p>
 </div>
 
 <h2 id="c14"><span class="num">14</span>素材與出處</h2>
