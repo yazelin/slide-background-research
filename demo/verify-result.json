@@ -1,0 +1,404 @@
+[
+  {
+    "file": "raw/a1-naive.png",
+    "size": [
+      1672,
+      941
+    ],
+    "pass": true,
+    "pass_count": 1,
+    "best": {
+      "zone": "左上",
+      "mean": 0.2126,
+      "std": 0.0339,
+      "ink": "黑字",
+      "contrast": 5.25,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.2126,
+        "std": 0.0339,
+        "ink": "黑字",
+        "contrast": 5.25,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.2402,
+        "std": 0.1549,
+        "ink": "黑字",
+        "contrast": 5.8,
+        "ok": false
+      },
+      {
+        "zone": "右上",
+        "mean": 0.2381,
+        "std": 0.1554,
+        "ink": "黑字",
+        "contrast": 5.76,
+        "ok": false
+      },
+      {
+        "zone": "左下",
+        "mean": 0.2466,
+        "std": 0.1406,
+        "ink": "黑字",
+        "contrast": 5.93,
+        "ok": false
+      },
+      {
+        "zone": "中下",
+        "mean": 0.3125,
+        "std": 0.2166,
+        "ink": "黑字",
+        "contrast": 7.25,
+        "ok": false
+      },
+      {
+        "zone": "右下",
+        "mean": 0.3028,
+        "std": 0.2088,
+        "ink": "黑字",
+        "contrast": 7.06,
+        "ok": false
+      }
+    ]
+  },
+  {
+    "file": "raw/a2-four-part.png",
+    "size": [
+      1672,
+      941
+    ],
+    "pass": true,
+    "pass_count": 3,
+    "best": {
+      "zone": "左上",
+      "mean": 0.319,
+      "std": 0.0979,
+      "ink": "黑字",
+      "contrast": 7.38,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.319,
+        "std": 0.0979,
+        "ink": "黑字",
+        "contrast": 7.38,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.2087,
+        "std": 0.0679,
+        "ink": "黑字",
+        "contrast": 5.17,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.1336,
+        "std": 0.0481,
+        "ink": "白字",
+        "contrast": 5.72,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.6676,
+        "std": 0.1591,
+        "ink": "黑字",
+        "contrast": 14.35,
+        "ok": false
+      },
+      {
+        "zone": "中下",
+        "mean": 0.4953,
+        "std": 0.1514,
+        "ink": "黑字",
+        "contrast": 10.91,
+        "ok": false
+      },
+      {
+        "zone": "右下",
+        "mean": 0.3349,
+        "std": 0.1313,
+        "ink": "黑字",
+        "contrast": 7.7,
+        "ok": false
+      }
+    ]
+  },
+  {
+    "file": "raw/b1-normal-scale.png",
+    "size": [
+      1672,
+      941
+    ],
+    "pass": true,
+    "pass_count": 4,
+    "best": {
+      "zone": "中上",
+      "mean": 0.5452,
+      "std": 0.0647,
+      "ink": "黑字",
+      "contrast": 11.9,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.5336,
+        "std": 0.0565,
+        "ink": "黑字",
+        "contrast": 11.67,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.5452,
+        "std": 0.0647,
+        "ink": "黑字",
+        "contrast": 11.9,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.5404,
+        "std": 0.0528,
+        "ink": "黑字",
+        "contrast": 11.81,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.1988,
+        "std": 0.1012,
+        "ink": "黑字",
+        "contrast": 4.98,
+        "ok": false
+      },
+      {
+        "zone": "中下",
+        "mean": 0.2235,
+        "std": 0.1291,
+        "ink": "黑字",
+        "contrast": 5.47,
+        "ok": false
+      },
+      {
+        "zone": "右下",
+        "mean": 0.2153,
+        "std": 0.119,
+        "ink": "黑字",
+        "contrast": 5.31,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "raw/b2-scale-break.png",
+    "size": [
+      1672,
+      941
+    ],
+    "pass": true,
+    "pass_count": 3,
+    "best": {
+      "zone": "右下",
+      "mean": 0.0898,
+      "std": 0.1198,
+      "ink": "白字",
+      "contrast": 7.51,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.1123,
+        "std": 0.0984,
+        "ink": "白字",
+        "contrast": 6.47,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.1899,
+        "std": 0.148,
+        "ink": "黑字",
+        "contrast": 4.8,
+        "ok": false
+      },
+      {
+        "zone": "右上",
+        "mean": 0.1442,
+        "std": 0.1423,
+        "ink": "白字",
+        "contrast": 5.41,
+        "ok": false
+      },
+      {
+        "zone": "左下",
+        "mean": 0.0908,
+        "std": 0.1075,
+        "ink": "白字",
+        "contrast": 7.46,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.1622,
+        "std": 0.1488,
+        "ink": "白字",
+        "contrast": 4.95,
+        "ok": false
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0898,
+        "std": 0.1198,
+        "ink": "白字",
+        "contrast": 7.51,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "raw/c1-flat-light.png",
+    "size": [
+      1672,
+      941
+    ],
+    "pass": true,
+    "pass_count": 6,
+    "best": {
+      "zone": "右下",
+      "mean": 0.0497,
+      "std": 0.0341,
+      "ink": "白字",
+      "contrast": 10.53,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.1469,
+        "std": 0.0155,
+        "ink": "白字",
+        "contrast": 5.33,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.1197,
+        "std": 0.0153,
+        "ink": "白字",
+        "contrast": 6.19,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.0952,
+        "std": 0.0124,
+        "ink": "白字",
+        "contrast": 7.23,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.06,
+        "std": 0.0441,
+        "ink": "白字",
+        "contrast": 9.54,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0545,
+        "std": 0.0387,
+        "ink": "白字",
+        "contrast": 10.04,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0497,
+        "std": 0.0341,
+        "ink": "白字",
+        "contrast": 10.53,
+        "ok": true
+      }
+    ]
+  },
+  {
+    "file": "raw/c2-glow.png",
+    "size": [
+      1672,
+      941
+    ],
+    "pass": true,
+    "pass_count": 6,
+    "best": {
+      "zone": "右下",
+      "mean": 0.0272,
+      "std": 0.088,
+      "ink": "白字",
+      "contrast": 13.61,
+      "ok": true
+    },
+    "zones": [
+      {
+        "zone": "左上",
+        "mean": 0.0495,
+        "std": 0.0203,
+        "ink": "白字",
+        "contrast": 10.55,
+        "ok": true
+      },
+      {
+        "zone": "中上",
+        "mean": 0.0403,
+        "std": 0.0153,
+        "ink": "白字",
+        "contrast": 11.63,
+        "ok": true
+      },
+      {
+        "zone": "右上",
+        "mean": 0.0278,
+        "std": 0.0109,
+        "ink": "白字",
+        "contrast": 13.5,
+        "ok": true
+      },
+      {
+        "zone": "左下",
+        "mean": 0.0397,
+        "std": 0.056,
+        "ink": "白字",
+        "contrast": 11.71,
+        "ok": true
+      },
+      {
+        "zone": "中下",
+        "mean": 0.0435,
+        "std": 0.1015,
+        "ink": "白字",
+        "contrast": 11.23,
+        "ok": true
+      },
+      {
+        "zone": "右下",
+        "mean": 0.0272,
+        "std": 0.088,
+        "ink": "白字",
+        "contrast": 13.61,
+        "ok": true
+      }
+    ]
+  }
+]

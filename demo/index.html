@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>簡報背景對照實驗</title>
+<meta name="description" content="同一句標題壓在六張背景上，三組 A/B 對照，附機械量測的文字區判定。">
+<style>
+  :root{ --ink:#f2f4f8; --dim:#9aa3b2; --line:#2b303a; --ok:#4ade80; --bad:#f87171; }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:#0b0d10;color:var(--ink);overflow:hidden;
+       font:16px/1.6 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;}
+  #stage{position:absolute;inset:0;display:grid;place-items:center;padding:24px}
+  .slide{position:relative;width:min(100%,calc((100vh - 140px) * 16 / 9));aspect-ratio:16/9;
+         background:#111;border-radius:10px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+  .slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .txt{position:absolute;inset:0;pointer-events:none}
+  .txt .t{position:absolute;width:44%;padding:0 1.6%}
+  .t h2{font-size:clamp(18px,3.4cqw,52px);line-height:1.25;margin:0 0 .35em;letter-spacing:.03em;font-weight:700}
+  .t p{font-size:clamp(10px,1.35cqw,20px);margin:0;letter-spacing:.14em;opacity:.85}
+  .slide{container-type:size}
+  .ink-white{color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.35)}
+  .ink-black{color:#10131a;text-shadow:0 2px 24px rgba(255,255,255,.3)}
+  .zones{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .18s}
+  .zones.on{opacity:1}
+  .zone{position:absolute;border:2px dashed rgba(255,255,255,.55);border-radius:4px;
+        font:600 11px/1.3 ui-monospace,monospace;color:#fff;padding:4px 6px;
+        text-shadow:0 1px 3px #000;background:rgba(0,0,0,.18)}
+  .zone.pass{border-color:var(--ok);background:rgba(74,222,128,.12)}
+  .zone.fail{border-color:var(--bad);background:rgba(248,113,113,.10)}
+  .cover{position:absolute;inset:0;display:grid;place-content:center;gap:14px;
+         text-align:center;padding:6%;background:linear-gradient(160deg,#141922,#0b0d10)}
+  .cover h2{font-size:clamp(20px,4cqw,54px);margin:0}
+  .cover p{color:var(--dim);margin:0;font-size:clamp(11px,1.6cqw,20px)}
+  table.res{border-collapse:collapse;font-size:clamp(9px,1.25cqw,16px);margin:0 auto}
+  table.res th,table.res td{padding:.4em .9em;border-bottom:1px solid var(--line);text-align:start}
+  table.res th{color:var(--dim);font-weight:600}
+  .num{font-variant-numeric:tabular-nums}
+  .up{color:var(--ok)}
+  #bar{position:absolute;left:0;right:0;bottom:0;height:96px;display:flex;align-items:center;
+       justify-content:center;gap:18px;color:var(--dim);font-size:13px;flex-wrap:wrap;padding:0 16px}
+  #bar b{color:var(--ink);font-weight:600}
+  kbd{background:#1c212a;border:1px solid var(--line);border-radius:5px;padding:1px 7px;
+      font:12px/1.5 ui-monospace,monospace;color:var(--ink)}
+  button{background:#1c212a;color:var(--ink);border:1px solid var(--line);border-radius:6px;
+         padding:5px 12px;cursor:pointer;font:inherit;font-size:13px}
+  button:hover{border-color:#4a5364}
+  .caption{position:absolute;bottom:14px;left:14px;background:rgba(8,10,14,.72);
+           border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:6px 12px;
+           font-size:clamp(9px,1.15cqw,14px);letter-spacing:.04em}
+</style>
+</head>
+<body>
+
+<div id="stage"><div class="slide" id="slide"></div></div>
+
+<div id="bar">
+  <span><b id="pos">1 / 8</b></span>
+  <span><kbd>←</kbd><kbd>→</kbd> 翻頁</span>
+  <span><button id="btnZ">顯示文字區判定</button> <kbd>G</kbd></span>
+  <span><button id="btnT">隱藏標題</button> <kbd>T</kbd></span>
+  <span id="hint"></span>
+</div>
+
+<script>
+const TITLE = { h: "揚帆起航　攜手並進", p: "2026 年度總結報告" };
+
+const SLIDES = [
+  { type: "cover", h: "簡報背景對照實驗",
+    p: "同一句標題，壓在六張自己生成的背景上。左右鍵翻頁，按 G 看機械量測的文字區判定。" },
+
+  { img: "assets/a1-naive.jpg", key: "a1-naive", cap: "A1　一句話提示詞（對照組）" },
+  { img: "assets/a2-four-part.jpg", key: "a2-four-part", cap: "A2　四段結構提示詞" },
+
+  { img: "assets/b1-normal-scale.jpg", key: "b1-normal-scale", cap: "B1　正常尺度（對照組）" },
+  { img: "assets/b2-scale-break.jpg", key: "b2-scale-break", cap: "B2　尺度失衡：帆船縮成風暴眼裡的一點" },
+
+  { img: "assets/c1-flat-light.jpg", key: "c1-flat-light", cap: "C1　平光（對照組）" },
+  { img: "assets/c2-glow.jpg", key: "c2-glow", cap: "C2　加一道流金色發光脈絡" },
+
+  { type: "result", h: "量測結果", p: "六個候選文字區裡，有幾個同時通過平坦度與對比度" },
+];
+
+const ZONE_DEF = {
+  "左上": [0.04, 0.08], "中上": [0.28, 0.08], "右上": [0.52, 0.08],
+  "左下": [0.04, 0.60], "中下": [0.28, 0.60], "右下": [0.52, 0.60],
+};
+const ZW = 0.44, ZH = 0.30;
+
+let idx = 0, showZones = false, showText = true, data = null;
+
+fetch("verify-result.json")
+  .then(r => r.ok ? r.json() : null)
+  .then(j => { data = j; render(); })
+  .catch(() => { render(); });
+
+function byKey(key) {
+  if (!data) return null;
+  return data.find(r => (r.file || "").includes(key)) || null;
+}
+
+function zoneHTML(key) {
+  const rec = byKey(key);
+  let html = '<div class="zones' + (showZones ? " on" : "") + '">';
+  for (const [name, [zx, zy]] of Object.entries(ZONE_DEF)) {
+    let cls = "zone", label = name;
+    if (rec) {
+      const z = rec.zones.find(z => z.zone === name);
+      if (z) {
+        cls += z.ok ? " pass" : " fail";
+        label = `${name}　std ${z.std.toFixed(3)}　${z.ink} ${z.contrast.toFixed(1)}`;
+      }
+    }
+    html += `<div class="${cls}" style="left:${zx * 100}%;top:${zy * 100}%;`
+          + `width:${ZW * 100}%;height:${ZH * 100}%">${label}</div>`;
+  }
+  return html + "</div>";
+}
+
+function resultTable() {
+  const pairs = [
+    ["A　提示詞四段結構", "a1-naive", "一句話", "a2-four-part", "四段"],
+    ["B　尺度失衡", "b1-normal-scale", "正常尺度", "b2-scale-break", "失衡"],
+    ["C　光", "c1-flat-light", "平光", "c2-glow", "加光"],
+  ];
+  let rows = "";
+  for (const [label, k1, n1, k2, n2] of pairs) {
+    const a = byKey(k1), b = byKey(k2);
+    const av = a ? a.pass_count : "—", bv = b ? b.pass_count : "—";
+    const up = (typeof av === "number" && typeof bv === "number" && bv > av) ? " up" : "";
+    rows += `<tr><td>${label}</td><td>${n1}</td><td class="num">${av} / 6</td>`
+          + `<td>${n2}</td><td class="num${up}">${bv} / 6</td></tr>`;
+  }
+  return `<table class="res"><thead><tr><th>對照組</th><th>前</th><th>過關區</th>`
+       + `<th>後</th><th>過關區</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+// 標題擺哪、用什麼字色，全部照 verify.py 挑出來的代表區，不手動調
+function placement(key) {
+  const rec = byKey(key);
+  const fallback = { left: "4%", top: "10%", ink: "white", zone: null };
+  if (!rec) return fallback;
+  const [zx, zy] = ZONE_DEF[rec.best.zone] || [0.04, 0.08];
+  return {
+    left: (zx * 100 + 1) + "%",
+    top: (zy * 100 + 3) + "%",
+    ink: rec.best.ink === "黑字" ? "black" : "white",
+    zone: rec.best.zone,
+  };
+}
+
+function render() {
+  const s = SLIDES[idx];
+  const el = document.getElementById("slide");
+  if (s.type === "cover") {
+    el.innerHTML = `<div class="cover"><h2>${s.h}</h2><p>${s.p}</p></div>`;
+  } else if (s.type === "result") {
+    el.innerHTML = `<div class="cover"><h2>${s.h}</h2><p>${s.p}</p>${resultTable()}</div>`;
+  } else {
+    const pl = placement(s.key);
+    const t = showText
+      ? `<div class="txt"><div class="t ink-${pl.ink}" style="left:${pl.left};top:${pl.top}">`
+        + `<h2>${TITLE.h}</h2><p>${TITLE.p}</p></div></div>`
+      : "";
+    const where = pl.zone ? `　標題放在「${pl.zone}」` : "";
+    el.innerHTML = `<img src="${s.img}" alt="${s.cap}">${t}${zoneHTML(s.key)}`
+                 + `<div class="caption">${s.cap}${where}</div>`;
+  }
+  document.getElementById("pos").textContent = `${idx + 1} / ${SLIDES.length}`;
+  document.getElementById("btnZ").textContent = showZones ? "隱藏文字區判定" : "顯示文字區判定";
+  document.getElementById("btnT").textContent = showText ? "隱藏標題" : "顯示標題";
+  document.getElementById("hint").textContent =
+    data ? "" : "（量測資料讀不到，用網頁伺服器開才會顯示數字）";
+}
+
+function go(d) { idx = (idx + d + SLIDES.length) % SLIDES.length; render(); }
+
+addEventListener("keydown", e => {
+  if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(1); }
+  else if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); }
+  else if (e.key === "g" || e.key === "G") { showZones = !showZones; render(); }
+  else if (e.key === "t" || e.key === "T") { showText = !showText; render(); }
+});
+document.getElementById("btnZ").onclick = () => { showZones = !showZones; render(); };
+document.getElementById("btnT").onclick = () => { showText = !showText; render(); };
+document.getElementById("stage").onclick = e => { if (e.target.id === "stage") go(1); };
+</script>
+</body>
+</html>
